@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Head from "next/head";
+import { AuthModal } from "@/components/AuthModal";
+import BottomNavbar from "@/components/BottomNavbar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const poppins = Poppins({
+  subsets: ["latin-ext"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -24,10 +25,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* <Head>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          charSet="UTF-8"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+        />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+        />
+      </Head> */}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${poppins.className}`}
       >
-        {children}
+        <div className="min-h-screen">
+          <Header />
+          {children}
+        </div>
+        <BottomNavbar/>
+        <Footer />
+        <AuthModal />
       </body>
     </html>
   );
