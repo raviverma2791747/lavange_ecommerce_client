@@ -12,10 +12,10 @@ class BaseService {
     //     },
     // })
 
-    static async handler(fn: (...args: unknown[]) => Promise<service.IBaseResponse | null>, toast: boolean = true): Promise<service.IBaseResponse | null> {
+    static async handler(fn: (...args: unknown[]) => Promise<service.IBaseResponse | null>): Promise<service.IBaseResponse | null> {
         try {
             return await fn()
-        } catch (error) {
+        } catch {
             //toast && alert(error)
             return null
         }

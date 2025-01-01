@@ -3,8 +3,14 @@ import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
 import CollectionCard from './CollectionCard';
 import CollectionCardShimmer from './CollectionCardShimmer';
+import { model } from '@/types/model';
 
-const CollectionCarousel =({ collections = [], loading = true }) => {
+interface ICollectionCarouselProps {
+    collections: model.ICollection[];
+    loading?: boolean;
+}
+
+const CollectionCarousel: React.FC<ICollectionCarouselProps> =({ collections = [], loading = true }) => {
     const responsive = {
         desktop: {
             breakpoint: { max: 3000, min: 1024 },

@@ -3,21 +3,23 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import { DATE_FORMAT } from '@/helper/constants';
 import { formatDate } from '@/helper/utils';
 import { policyConfigService } from '@/services';
+import { model } from '@/types/model';
 import React from 'react'
+
 
 const TermsAndConditionsPage = async () => {
   let loading = true;
-  let terms_and_conditions: any = null;
   const initPolicy = async () => {
     const response = await policyConfigService.getAll();
     if (response && response.status === 200) {
-      const policies = response.data.policies as [] ?? [];
-      terms_and_conditions = policies.find((policy: any) => policy.name === 'terms-and-conditions');
+      const policies = response.data.policies as model.IPolicy[] ?? [];
+      return policies.find((policy) => policy.name === 'terms-and-conditions') ?? null;
     }
-    loading = false;
+    return null;
   }
 
-  await initPolicy();
+  const terms_and_conditions: model.IPolicy | null = await initPolicy();
+  loading = false;
 
   if (!terms_and_conditions) return <div>Delivery And Return Policy not found</div>;
 

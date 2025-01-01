@@ -1,4 +1,4 @@
-import { Minus, Plus, Trash, TrashSimple } from '@phosphor-icons/react/dist/ssr'
+import { Minus, Plus, Trash } from '@phosphor-icons/react/dist/ssr'
 import React from 'react'
 
 const CartItemShimmer = () => {

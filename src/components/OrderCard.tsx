@@ -3,9 +3,10 @@ import { DATE_FORMAT } from '@/helper/constants';
 import { formatCurrency, formatDate } from '@/helper/utils';
 import React from 'react'
 import OrderStatusPill from './OrderStatusPill';
+import { model } from '@/types/model';
 
 interface IOrderCardProps {
-    order: any
+    order: model.IOrder
 }
 
 const OrderCard: React.FC<IOrderCardProps> = ({ order }) => {
@@ -29,7 +30,7 @@ const OrderCard: React.FC<IOrderCardProps> = ({ order }) => {
                     <div className="font-semibold">Total</div>
                     <div>
                         {formatCurrency(
-                            order.items.reduce((a:any, b:any) => a + b.quantity * b.price, 0)
+                            order.items.reduce((a, b) => a + b.quantity * b.price, 0)
                         )}
                     </div>
                 </div>
@@ -41,8 +42,8 @@ const OrderCard: React.FC<IOrderCardProps> = ({ order }) => {
                     <div className="font-semibold">Order #</div>
                     <div
                         className="uppercase text-primary-500"
-                        onClick={(e: any) => {
-                            e.stopImmediatePropagation();
+                        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                            e.nativeEvent.stopImmediatePropagation();
                             e.preventDefault();
                             navigator.clipboard.writeText(order._id);
                         }}

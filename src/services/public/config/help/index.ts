@@ -1,4 +1,5 @@
 import BaseService from "@/services/service";
+import { service } from "@/types/service";
 
 class HelpConfigService extends BaseService {
     API_URL: string;
@@ -8,7 +9,7 @@ class HelpConfigService extends BaseService {
         this.API_URL = HelpConfigService.BASE_API_URL + '/public/config/help'
     }
 
-    async getOne() {
+    async getOne(): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}`)
             return await response.json()

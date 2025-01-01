@@ -5,8 +5,15 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
 import ProductCardShimmer from './ProductCardShimmer';
 import ProductCard from './ProductCard';
+import { model } from '@/types/model';
+import { ProductModel } from '@/models';
 
-const ProductCarousel = ({ products = [], loading = true }) => {
+interface IProductCarouselProps {
+    products: model.IProduct[];
+    loading?: boolean;
+}
+
+const ProductCarousel: React.FC<IProductCarouselProps> = ({ products = [], loading = true }) => {
     // const responsive = {
     //     desktop: {
     //         breakpoint: { max: 3000, min: 1024 },
@@ -56,7 +63,7 @@ const ProductCarousel = ({ products = [], loading = true }) => {
                 ))
                 : products.map((product, index) => (
                     <SplideSlide key={index}>
-                        <ProductCard key={index} product={product} />
+                        <ProductCard key={index} product={ProductModel.fromOBJ(product)} />
                     </SplideSlide>
                 ))}
         </Splide>

@@ -2,17 +2,19 @@ import BreadcrumbShimmer from '@/components/BreadcrumbShimmer'
 import CategoryCard from '@/components/CategoryCard'
 import CategoryCardShimmer from '@/components/CategoryCardShimmer'
 import Breadcrumb from '@/components/ui/Breadcrumb'
+import { CategoryModel } from '@/models'
 import { categoryService } from '@/services'
+import { model } from '@/types/model'
 import React from 'react'
 
 const CategoriesPage = async () => {
-    let categories: any = [];
-    let loading = false;
+    let categories: CategoryModel[] = [];
+    const loading = false;
 
     const initCategories = async () => {
         const response = await categoryService.getAll();
         if (response && response.status === 200) {
-            categories = response.data.categories ?? [];
+            categories =   (response.data.categories as model.ICategory[]).map(category => CategoryModel.fromOBJ(category)) ?? [];
         }
     }
     await initCategories();
@@ -56,7 +58,7 @@ const CategoriesPage = async () => {
                             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
                         >
                             {
-                                categories.map((category: any, index: number) => <CategoryCard key={index} category={category} />)
+                                categories.map((category, index: number) => <CategoryCard key={index} category={category} />)
                             }
                         </div>
                         :

@@ -5,45 +5,46 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import useStore from '@/helper/store';
 import { userPrivateService, userService } from '@/services';
 import { getAvatarName, processCart } from '@/helper/utils';
-import Link from 'next/link';
-import { Router } from 'next/router';
 import { useRouter } from 'next/navigation';
-import { Product } from "@/models";
+import { ProductModel } from "@/models";
 import { model } from "@/types/model"
 import CartItem from './CartItem';
+import Link from 'next/link';
 
 const Header = () => {
-    const { setAuthModal, wishlist, setWishlist, cart, setCart, userInfo, setUserInfo } = useStore();
+    const { setAuthModal, wishlist, setWishlist, cart, setCart, userInfo, setUserInfo, authenticating, setAuthenticating } = useStore();
     const router = useRouter();
 
     const initWishlist = async () => {
         const response = await userPrivateService.getWishlist();
         if (response && response.status === 200) {
-            setWishlist(response.data.wishList ?? []);
+            setWishlist(response.data.wishList as ProductModel[] ?? []);
         }
     }
 
     const initCart = async () => {
         const response = await userPrivateService.getCart();
         if (response && response.status === 200) {
-            const temp_cart: any = response.data.cart ?? [];
-            setCart(processCart(temp_cart).map((temp_item: any) => { return { ...temp_item, product: Product.fromOBJ(temp_item.product) } }));
+            const temp_cart = response.data.cart as model.ICartItem[] ?? [];
+            setCart(processCart(temp_cart).map((temp_item) => { return { ...temp_item, product: ProductModel.fromOBJ(temp_item.product) } }));
             // const t = temp_cart.map((temp_item: any) => { return { ...temp_item, product: Product.fromJSON(temp_item.product) } });
             // console.log(t);
         }
     }
 
     const initUser = async () => {
-        const response: any = await userPrivateService.me();
+        setAuthenticating(true);
+        const response = await userPrivateService.me();
         if (response && response.status === 200) {
-            setUserInfo(response.data.user ?? null);
+            setUserInfo(response.data.user as model.IUser ?? null);
             initCart();
             initWishlist();
         }
+        setAuthenticating(false);
     }
 
     const logout = async () => {
-        const response: any = await userService.logout();
+        const response = await userService.logout();
         if (response && response.status === 200) {
             setUserInfo(null);
         }
@@ -53,13 +54,17 @@ const Header = () => {
         initUser();
     }, []);
 
+    useEffect(() => {
+        // toast.info("Authenticating...");
+    }, [authenticating])
+
     return (<header className="border-b border-gray-200 sticky top-0 bg-white z-50 h-16">
         <div
             className="max-w-7xl mx-auto flex items-center py-2 px-4 7xl:px-0 gap-4"
         >
             <div>
-                <a className="flex-none text-xl font-semibold" href="/">
-                    {process.env.NEXT_PUBLIC_BRAND_NAME}</a>
+                <Link className="flex-none text-xl font-semibold" href="/">
+                    {process.env.NEXT_PUBLIC_BRAND_NAME}</Link>
             </div>
             <div className="grow">
                 <div className="lg:w-4/12 mx-auto relative">
@@ -256,13 +261,13 @@ const Header = () => {
                                 <span
                                     className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"
                                 ></span>
-                                {cart.reduce((a: any, b: any) => a + b.quantity, 0) > 9 ? "9+" : cart.reduce((a: any, b: any) => a + b.quantity, 0)}
+                                {cart.reduce((a, b) => a + b.quantity, 0) > 9 ? "9+" : cart.reduce((a, b) => a + b.quantity, 0)}
                             </div>)}
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
                         sideOffset={8}
                         align="end"
-                        className="w-full min-w-[20rem] bg-white rounded-xl border border-muted bg-background py-2 shadow-lg z-[75]"
+                        className="w-full max-w-[20rem] bg-white rounded-xl border border-muted bg-background py-2 shadow-lg z-[75]"
                     >
 
                         {!userInfo ? (
@@ -270,8 +275,8 @@ const Header = () => {
                         ) : cart.length === 0 ? (
                             <p className="px-4 py-2 text-center">Your cart is empty</p>
                         ) : (
-                            <>{cart.slice(0, 3).map((cart_item: model.ICartItem) =>
-                            (<DropdownMenu.Item>
+                            <>{cart.slice(0, 3).map((cart_item) =>
+                            (<DropdownMenu.Item key={cart_item._id}>
                                 {/* <a
                                     className="w-full p-2 grid grid-cols-4 gap-2 cursor-pointer hover:bg-gray-200"
                                     href={`/product/${cart_item.product.slug}`}
@@ -348,7 +353,7 @@ const Header = () => {
                             <p className="px-4 py-2 text-center">Your wishlist is empty</p>
                         ) : (
                             <>
-                                {wishlist.slice(0, 3).map((product: any) => (
+                                {wishlist.slice(0, 3).map((product) => (
                                     <DropdownMenu.Item key={product.slug}>
                                         <a
                                             className="w-full p-2 grid grid-cols-4 gap-2 cursor-pointer hover:bg-gray-200"

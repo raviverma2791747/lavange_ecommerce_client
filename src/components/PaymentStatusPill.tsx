@@ -6,7 +6,7 @@ interface IPaymentStatusPill {
     paymentStatus: number
 }
 const PaymentStatusPill: React.FC<IPaymentStatusPill> = ({ paymentStatus }) => {
-    const PAYMENT_STATUS_CLASSES: any = {
+    const PAYMENT_STATUS_CLASSES: Record<number, string> = {
         [PAYMENT_STATUS.PENDING]: 'bg-yellow-100 text-yellow-500 border-yellow-500',
         [PAYMENT_STATUS.SUCCESS]: 'bg-green-100 text-green-500 border-green-500',
         [PAYMENT_STATUS.FAILED]: 'bg-red-100 text-red-500 border-red-500',

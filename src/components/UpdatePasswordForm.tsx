@@ -1,10 +1,15 @@
 'use client';
 import { CircleNotch } from '@phosphor-icons/react/dist/ssr';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-interface IUpdatePasswordFormProps { 
-    onSubmit?: (data: any) => void
+interface IUpdatePasswordFormProps {
+    onSubmit?: (data: IUpdatePasswordForm) => Promise<void>;
+}
+
+export interface IUpdatePasswordForm {
+    new_password: string;
+    confirm_password: string;
 }
 
 const UpdatePasswordForm: React.FC<IUpdatePasswordFormProps> = ({ onSubmit }) => {
@@ -14,17 +19,21 @@ const UpdatePasswordForm: React.FC<IUpdatePasswordFormProps> = ({ onSubmit }) =>
         handleSubmit,
         formState: { errors },
         watch,
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            new_password: '',
+            confirm_password: '',
+        },
+    });
 
     // Watch the new password field to compare it with confirm password
     const newPassword = watch('new_password');
 
-    const onSubmitHandler = async (data: any) => {
+    const onSubmitHandler: SubmitHandler<IUpdatePasswordForm> = async (data) => {
         setLoading(true);
-        onSubmit && await onSubmit(data);
+        if(onSubmit) await onSubmit(data);
         setLoading(false);
     }
-
 
     return (
         <form onSubmit={handleSubmit(onSubmitHandler)}>

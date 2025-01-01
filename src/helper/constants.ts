@@ -1,5 +1,7 @@
 export const DATE_TIME_FORMAT = "dd MMM, yyyy HH:mm:ss a";
 export const DATE_FORMAT = "dd MMM, yyyy";
+export const MAX_QUANTITY = 50;
+export const MIN_QUANTITY = 1;
 
 export const STATUS = Object.freeze({
   DRAFT: 0,

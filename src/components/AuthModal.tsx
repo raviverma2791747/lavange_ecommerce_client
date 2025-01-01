@@ -1,12 +1,12 @@
 'use client';
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Separator from "@radix-ui/react-separator";
 import { X } from '@phosphor-icons/react/dist/ssr';
-import EmailLogin from './EmailLogin';
-import ForgotPassword from './ForgotPassword';
-import SignupSuccess from './SignupSuccess';
 import useStore from '@/helper/store';
+import EmailAuth from './auth/EmailAuth';
+import Link from 'next/link';
+import { PUBLIC_API_URL } from '@/secrets';
 
 const AUTH_MODE = {
     // PHONE: "PHONE",
@@ -16,7 +16,13 @@ const AUTH_MODE = {
 };
 
 export const AuthModal = () => {
+    const selectedAuthMode = AUTH_MODE.EMAIL;
+    const [href, setHref] = React.useState<string>("");
     const { authModal, setAuthModal } = useStore();
+
+    useEffect(() => {
+        setHref(window.location.href);
+    },[])
 
     return (
         <Dialog.Root
@@ -39,7 +45,19 @@ export const AuthModal = () => {
                         Please Login To Continue</Dialog.Title>
                     <Separator.Root className="-mx-5 mb-4 mt-2 block h-px bg-gray-200" />
                     <Dialog.Description className="">
-                        <EmailLogin />
+                        {
+                            AUTH_MODE.EMAIL === selectedAuthMode && <EmailAuth />
+                        }
+                        <div className="text-center mb-4">or</div>
+                        <div className="flex flex-col gap-4">
+                            <Link
+                                className="w-full hover:scale-105 transition duration-100 ease-in-out py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-lg border border-primary-600 text-primary-600 hover:bg-primary-50 disabled:opacity-50 disabled:pointer-events-none"
+                                href={`${PUBLIC_API_URL}/public/user/auth/google?redirect_uri=${href}`}
+                            >
+                                <img src="/assets/images/google_logo.svg" alt="" className='aspect-square w-6' />
+                                Continue with Google
+                            </Link>
+                        </div>
                     </Dialog.Description>
 
                     <Dialog.Close

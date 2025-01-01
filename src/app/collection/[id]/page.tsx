@@ -2,31 +2,31 @@ import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import ProductCard from '@/components/ProductCard';
 import ProductCardShimmer from '@/components/ProductCardShimmer';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import { CollectionModel } from '@/models';
 import { collectionService } from '@/services';
+import { model } from '@/types/model';
 import React from 'react'
 
 interface ICollectionPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 const CollectionPage: React.FC<ICollectionPageProps> = async ({ params }) => {
   const { id: collectionID } = await params;
   let loading = true;
-  let collection: any = null;
 
   const initCollection = async () => {
     const response = await collectionService.getOneBySlug(collectionID);
-    console.log(response);
     if (response && response.status === 200) {
-      collection = response.data.collection ?? null;
+      return CollectionModel.fromOBJ(response.data.collection as model.ICollection) ?? null;
     }
-    loading = false;
+    return null;
   }
 
-  await initCollection();
-
+  const collection: CollectionModel | null = await initCollection();
+  loading = false;
   if (!collection) return <div>Collection not found</div>;
 
   return (
@@ -73,7 +73,7 @@ const CollectionPage: React.FC<ICollectionPageProps> = async ({ params }) => {
               className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
             >
               {
-                collection.products.map((product: any, index: number) => (
+                collection.products.map((product, index: number) => (
                   <ProductCard key={index} product={product} />
                 ))
               }

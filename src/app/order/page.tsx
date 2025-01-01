@@ -3,21 +3,19 @@ import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import OrderCard from '@/components/OrderCard';
 import OrderCardShimmer from '@/components/OrderCardShimmer';
 import Breadcrumb from '@/components/ui/Breadcrumb';
-import useStore from '@/helper/store';
+import { OrderModel } from '@/models';
 import { userPrivateService } from '@/services';
-import { Barricade, Lock } from '@phosphor-icons/react/dist/ssr';
+import { model } from '@/types/model';
 import React, { useEffect } from 'react'
 
 const OrdersPage = () => {
   const [loading, setLoading] = React.useState(true);
-  const [orders, setOrders] = React.useState([]);
-  const { userInfo } = useStore();
-  const authenticating = false;
+  const [orders, setOrders] = React.useState<OrderModel[]>([]);
 
   const initOrders = async () => {
-    const response: any = await userPrivateService.getAllOrders();
+    const response = await userPrivateService.getAllOrders();
     if (response && response.status === 200) {
-      setOrders(response.data.orders ?? []);
+      setOrders(  (response.data.orders as model.IOrder[]).map((order) => OrderModel.fromOBJ(order)) ?? []);
     }
     setLoading(false);
   }
@@ -28,34 +26,34 @@ const OrdersPage = () => {
 
   return (
     <div className="bg-white max-w-7xl mx-auto px-4 7xl:px-0 mb-4 mt-4 min-h-[calc(100vh-64px)] flex flex-col">
-      {userInfo ?
-        <>
-          {loading ?
-            <>
-              <BreadcrumbShimmer count={1} />
-              <div className="flex gap-4 flex-col">
+
+      <>
+        {loading ?
+          <>
+            <BreadcrumbShimmer count={1} />
+            <div className="flex gap-4 flex-col">
+              {
+                Array(5).fill(0).map((A, index: number) => (
+                  <OrderCardShimmer key={index} />
+                ))
+              }
+            </div>
+          </>
+          :
+          <>
+            <Breadcrumb
+              routes={[
                 {
-                  Array(5).fill(0).map((A, index: number) => (
-                    <OrderCardShimmer key={index} />
-                  ))
-                }
-              </div>
-            </>
-            :
-            <>
-              <Breadcrumb
-                routes={[
-                  {
-                    name: "Order",
-                    path: "/order",
-                  },
-                ]}
-              />
-              {/* <!-- <h1 className="hidden md:block font-semibold text-3xl text-center mb-4">
+                  name: "Order",
+                  path: "/order",
+                },
+              ]}
+            />
+            {/* <!-- <h1 className="hidden md:block font-semibold text-3xl text-center mb-4">
         Orders
       </h1> --> */}
-              <div>
-                {/* <!-- <select
+            <div>
+              {/* <!-- <select
           className="cursor-pointer outline-primary-500 block w-fit border border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
           on:change={(e) => {
             let v = e.target.value.split("-");
@@ -73,18 +71,18 @@ const OrdersPage = () => {
           <option selected value="price-asc">Price: Low to High</option>
           <option value="price-desc">Price: High to Low</option>
         </select> --> */}
-              </div>
+            </div>
 
-              {orders.length > 0 ?
-                <>
-                  <div className="flex gap-4 flex-col">
-                    {
-                      orders.map((order: any, index: number) => (
-                        <OrderCard key={index} order={order} />
-                      ))
-                    }
-                  </div>
-                  {/* <!-- <Pagination.Root count={100} perPage={10} let:pages let:range>
+            {orders.length > 0 ?
+              <>
+                <div className="flex gap-4 flex-col">
+                  {
+                    orders.map((order, index: number) => (
+                      <OrderCard key={index} order={order} />
+                    ))
+                  }
+                </div>
+                {/* <!-- <Pagination.Root count={100} perPage={10} let:pages let:range>
         <div className="my-8 flex items-center">
           <Pagination.PrevButton
             className="mr-[25px] inline-flex size-10 items-center justify-center rounded-[9px] bg-transparent hover:bg-dark-10 active:scale-98 disabled:cursor-not-allowed disabled:text-muted-foreground hover:disabled:bg-transparent"
@@ -122,41 +120,19 @@ const OrdersPage = () => {
         <p className="text-xl font-semibold">No orders found!</p>
       </div> --> */}
 
-                </>
-                : <div
-                  className="grow flex justify-center items-center flex-col gap-4 p-4 h-[calc(100vh-64px)]"
-                >
-                  <div>Your order history is empty</div>
-                  <a
-                    href="/search"
-                    className="w-full sm:w-fit hover:scale-105 transition duration-100 ease-in-out py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none"
-                  >Continue shopping</a>
-                </div>
-              }
-            </>}
-        </>
-        :
-        (!userInfo && authenticating) ?
-          <div className="flex items-center justify-center grow">
-            <div className="flex flex-col items-center">
-              <Lock size={32} />
-              <div>Please wait while we log you in...</div>
-            </div>
-          </div>
-          :
-          <div className="flex items-center justify-center grow">
-            <div className="flex flex-col items-center">
-              <Barricade size={32} />
-              <div className="mb-4">Please login to view your account details</div>
-              <button
-                className="w-full sm:w-fit hover:scale-105 transition duration-100 ease-in-out py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none"
-                onClick={() => {
-                  // goto("/");
-                  // $login_signup_modal_open = true;
-                }}>Continue to Login</button>
-            </div>
-          </div>
-      }
+              </>
+              : <div
+                className="grow flex justify-center items-center flex-col gap-4 p-4 h-[calc(100vh-64px)]"
+              >
+                <div>Your order history is empty</div>
+                <a
+                  href="/search"
+                  className="w-full sm:w-fit hover:scale-105 transition duration-100 ease-in-out py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none"
+                >Continue shopping</a>
+              </div>
+            }
+          </>}
+      </>
     </div>
   )
 }

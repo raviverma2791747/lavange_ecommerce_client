@@ -1,5 +1,5 @@
 import BaseService from "@/services/service";
-
+import { service } from "@/types/service";
 
 class UserPrivateService extends BaseService {
     API_URL: string;
@@ -9,7 +9,7 @@ class UserPrivateService extends BaseService {
         this.API_URL = UserPrivateService.BASE_API_URL + '/private/user'
     }
 
-    me() {
+    me(): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/info`, {
                 method: 'GET',
@@ -22,7 +22,7 @@ class UserPrivateService extends BaseService {
         })
     }
 
-    getWishlist() {
+    getWishlist(): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/wishlist`, {
                 method: 'GET',
@@ -35,7 +35,7 @@ class UserPrivateService extends BaseService {
         })
     }
 
-    getCart() {
+    getCart(): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/cart`, {
                 method: 'GET',
@@ -48,7 +48,79 @@ class UserPrivateService extends BaseService {
         })
     }
 
-    getOneOrder(id: string) {
+    removeFromCart(payload: service.Private.User.IRemoveFromCartParams): Promise<service.IBaseResponse | null> {
+        return BaseService.handler(async () => {
+            const response = await fetch(`${this.API_URL}/cart/remove`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            })
+            return await response.json()
+        })
+    }
+
+    addToCart(payload: service.Private.User.IAddToCartParams): Promise<service.IBaseResponse | null> {
+        return BaseService.handler(async () => {
+            const response = await fetch(`${this.API_URL}/cart/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            })
+            return await response.json()
+        })
+    }
+
+    deleteFromCart(payload: service.Private.User.IDeleteFromCartParams): Promise<service.IBaseResponse | null> {
+        return BaseService.handler(async () => {
+            const response = await fetch(`${this.API_URL}/cart/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            })
+            return await response.json()
+        })
+    }
+
+    addToWishlist(payload: service.Private.User.IAddToWishlistParams): Promise<service.IBaseResponse | null> {
+        return BaseService.handler(async () => {
+            const response = await fetch(`${this.API_URL}/wishlist/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            })
+            return await response.json()
+        })
+    }
+
+    removeFromWishlist(payload: service.Private.User.IRemoveFromWishlistParams): Promise<service.IBaseResponse | null> {
+        return BaseService.handler(async () => {
+            const response = await fetch(`${this.API_URL}/wishlist/remove`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            })
+            return await response.json()
+        })
+    }
+
+
+
+    getOneOrder(id: string): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/order/${id}`, {
                 method: 'GET',
@@ -61,7 +133,7 @@ class UserPrivateService extends BaseService {
         })
     }
 
-    getAllOrders() {
+    getAllOrders(): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/order`, {
                 method: 'GET',
@@ -75,7 +147,7 @@ class UserPrivateService extends BaseService {
     }
 
 
-    getOneAddress(id: string) {
+    getOneAddress(id: string): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/address/${id}`, {
                 method: 'GET',
@@ -88,7 +160,7 @@ class UserPrivateService extends BaseService {
         })
     }
 
-    updateAddress(address: any) {
+    updateAddress(address: service.Private.User.IUpdateAddressParams): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/address`, {
                 method: 'POST',
@@ -102,7 +174,7 @@ class UserPrivateService extends BaseService {
         })
     }
 
-    updatePassword(payload: any) {
+    updatePassword(payload: service.Private.User.IUpdatePasswordParams): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/change-password`, {
                 method: 'POST',
@@ -116,31 +188,17 @@ class UserPrivateService extends BaseService {
         })
     }
 
-    // async getOne(CategoryId: string) {
-    //     const response = await fetch(`${this.API_URL}${CategoryId}`)
-
-    // }
-
-    // async getAll() {
-    //     return BaseService.handler(async () => {            
-    //         const response = await fetch(`${this.API_URL}`)
-    //         return await response.json()
-    //     })
-    // }
-
-    // async getOne(id: string) {
-    //     return BaseService.handler(async () => {
-    //         const response = await fetch(`${this.API_URL}/${id}`)
-    //         return await response.json()
-    //     })
-    // }
-
-    // async getOneBySlug(slug: string) {
-    //     return BaseService.handler(async () => {
-    //         const response = await fetch(`${this.API_URL}/slug/${slug}`)
-    //         return await response.json()
-    //     })
-    // }
+    async createOrder(payload: service.Private.User.ICreateOrderParams): Promise<service.IBaseResponse | null> {
+        const response = await fetch(`${this.API_URL}/order/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(payload)
+        })
+        return await response.json()
+    }
 }
 
 export default UserPrivateService

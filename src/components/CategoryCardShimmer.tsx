@@ -1,8 +1,9 @@
+import Link from 'next/link'
 import React from 'react'
 
 const CategoryCardShimmer = () => {
     return (
-        <a
+        <Link
             href="/"
             className="relative block rounded-lg hover:shadow-lg  w-full"
         >
@@ -17,7 +18,7 @@ const CategoryCardShimmer = () => {
                     <div className="bg-gray-200 animate-pulse rounded-lg w-6/12 mx-auto">&nbsp;</div>
                 </div>
             </div>
-        </a>
+        </Link>
 
     )
 }

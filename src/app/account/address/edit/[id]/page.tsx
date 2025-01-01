@@ -1,43 +1,47 @@
 'use client';
-import AddressForm from '@/components/AddressForm'
+import AddressForm, { IAddressForm } from '@/components/AddressForm'
 import AddressFormShimmer from '@/components/AddressFormShimmer';
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import { userPrivateService } from '@/services';
-import { useParams, useSearchParams } from 'next/navigation';
+import { model } from '@/types/model';
+import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
+import { toast } from 'react-toastify';
 
-
+interface IAddresEditPageParams  {
+  id: string;
+  [key: string]: string;
+}
 
 const AddressEditPage = () => {
-  const params: any = useParams();
-  const addressID: any = params.id;
-  const [loading, setLoading] = React.useState(true);
-  const [address, setAddress] = React.useState(null);
+  const params = useParams<IAddresEditPageParams>();
+  const addressID: string = params.id;
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [address, setAddress] = React.useState<model.IAddress | null>(null);
 
   const router = useRouter();
 
-  const updateAddress = async (address: any) => {
-    const response: any = await userPrivateService.updateAddress({
+  const updateAddress = async (address: IAddressForm) => {
+    const response = await userPrivateService.updateAddress({
       _id: addressID,
       ...address
     });
     if (response && response.status === 200) {
-      alert("Address Updated successfully");
+      toast.success("Address updated successfully");
       router.back();
     }
   }
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: IAddressForm) => {
     await updateAddress(data);
   }
 
   const initAddress = async () => {
-
-    const response: any = await userPrivateService.getOneAddress(addressID);
+    const response = await userPrivateService.getOneAddress(addressID);
     if (response && response.status === 200) {
-      setAddress(response.data.address ?? null);
+      setAddress(response.data.address as model.IAddress ?? null);
     }
     setLoading(false);
   }

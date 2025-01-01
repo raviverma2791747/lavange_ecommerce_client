@@ -1,50 +1,58 @@
 'use client';
 import React from 'react'
-import { useForm } from 'react-hook-form';
-import InputShimmer from './InputShimmer';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { ADDRESS_TYPE } from '@/helper/constants';
 import state_list from '@/helper/state_list';
-import { CircleNotch, Spinner } from '@phosphor-icons/react/dist/ssr';
+import { CircleNotch } from '@phosphor-icons/react/dist/ssr';
 
 interface IAddressFormProps {
-    defaultValues?: any,
-    onSubmit?: (data: any) => void
-    //values: any
+    defaultValues?: IAddressForm,
+    onSubmit?: (data: IAddressForm) => Promise<void>
+}
+
+export interface IAddressForm {
+    country: string,
+    fullName: string,
+    mobile: number,
+    type: number,
+    addressLine1: string,
+    addressLine2: string,
+    landmark: string,
+    city: string,
+    state: string,
+    pincode: number
 }
 
 const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) => {
-    const [loading, setLoading] = React.useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const { register, handleSubmit, formState: { errors } } = useForm<IAddressForm>({
         defaultValues: {
             country: defaultValues?.country ?? "India",
             fullName: defaultValues?.fullName ?? "",
-            mobile: defaultValues?.mobile ?? "",
+            mobile: defaultValues?.mobile ?? undefined,
             type: defaultValues?.type ?? ADDRESS_TYPE.HOME,
             addressLine1: defaultValues?.addressLine1 ?? "",
             addressLine2: defaultValues?.addressLine2 ?? "",
             landmark: defaultValues?.landmark ?? "",
             city: defaultValues?.city ?? "",
             state: defaultValues?.state,
-            pincode: defaultValues?.pincode ?? "",
+            pincode: defaultValues?.pincode ?? undefined,
         }
     });
 
-    const onSubmitHandler = async (data: any) => {
+    const onSubmitHandler: SubmitHandler<IAddressForm> = async (data) => {
         setLoading(true);
-        onSubmit && await onSubmit(data);
+        if (onSubmit) await onSubmit(data);
         setLoading(false);
     }
 
-
     return (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
-            {/* <!-- <h1 className="font-semibold text-3xl text-center mb-4">Add a new address</h1> --> */}
             <div className="mb-4">
                 <label htmlFor="country" className="block text-sm font-semibold mb-2">Country</label>
                 <input
                     type="text"
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                    // bind:value={address.country}
                     value={"India"}
                     {...register("country", { required: true })}
                     placeholder="Country"
@@ -57,7 +65,6 @@ const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) =
                 <input
                     type="text"
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                    // bind:value={address.fullName}
                     {...register("fullName", { required: true, minLength: 3, maxLength: 100 })}
                     placeholder="Full name (First and Last name)"
                     disabled={loading}
@@ -76,8 +83,7 @@ const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) =
                     <input
                         type="number"
                         className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                        {...register("mobile", { required: true, minLength: 10, maxLength: 10, })}
-                        // bind:value={address.mobile}
+                        {...register("mobile", { required: true, min: 0, max: 9999999999 })}
                         placeholder="Mobile Number"
                         disabled={loading}
                     />
@@ -92,12 +98,11 @@ const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) =
                 <select
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
                     {...register("type", { required: true })}
-                    // bind:value={address.type}
                     disabled={loading}
                 >
                     {
                         Object.entries(ADDRESS_TYPE).map(([key, value]) => (
-                            <option value={value}>{key}</option>
+                            <option value={value} key={key}>{key}</option>
                         ))
                     }
                 </select>
@@ -110,7 +115,6 @@ const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) =
                 <input
                     type="number"
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                    // bind:value={address.pincode}
                     {...register("pincode", { required: true, minLength: 6, maxLength: 6 })}
                     placeholder="Pincode"
                     disabled={loading}
@@ -124,7 +128,6 @@ const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) =
                 <input
                     type="text"
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                    // bind:value={address.addressLine1}
                     {...register("addressLine1", { required: true, minLength: 3, maxLength: 100 })}
                     placeholder="Flat, House no., Building, Company, Apartment"
                     disabled={loading}
@@ -138,7 +141,6 @@ const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) =
                 <input
                     type="text"
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                    // bind:value={address.addressLine2}
                     {...register("addressLine2", { required: true, minLength: 3, maxLength: 100 })}
                     placeholder="Area, Street, Sector, Village"
                     disabled={loading}
@@ -152,7 +154,6 @@ const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) =
                 <input
                     type="text"
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                    // bind:value={address.landmark}
                     {...register("landmark", { required: false, minLength: 3, maxLength: 100 })}
                     placeholder="Landmark"
                     disabled={loading}
@@ -163,7 +164,6 @@ const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) =
                 <input
                     type="text"
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                    // bind:value={address.city}
                     {...register("city", { required: true, minLength: 3, maxLength: 100 })}
                     placeholder="Town/City"
                     disabled={loading}
@@ -178,13 +178,12 @@ const AddressForm: React.FC<IAddressFormProps> = ({ defaultValues, onSubmit }) =
                 </label>
                 <select
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                    // bind:value={address.state}
                     {...register("state", { required: true })}
                     disabled={loading}
                 >
                     {
                         state_list.map((state) => (
-                            <option value={state}>{state}</option>
+                            <option value={state} key={state}>{state}</option>
                         ))
                     }
                 </select>

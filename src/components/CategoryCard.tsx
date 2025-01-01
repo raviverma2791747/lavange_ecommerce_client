@@ -1,12 +1,14 @@
+import { CategoryModel } from '@/models'
+import Link from 'next/link'
 import React from 'react'
 
-interface ICategoryProps {
-    category: any
+interface ICategoryCardProps {
+    category: CategoryModel
 }
 
-const CategoryCard: React.FC<ICategoryProps> = ({ category }) => {
+const CategoryCard: React.FC<ICategoryCardProps> = ({ category }) => {
     return (
-        <a
+        <Link
             href={`/category/${category.slug}`}
             className="relative block rounded-lg w-full overflow-hidden"
         >
@@ -18,7 +20,7 @@ const CategoryCard: React.FC<ICategoryProps> = ({ category }) => {
             <div
                 className="aspect-square bg-gray-200 rounded-full overflow-hidden hover:border-primary-200 border-gray-200 border"
             >
-                {category.asset &&
+                {category.asset &&  typeof category.asset === 'object' &&
                     <img
                         className="object-cover object-center w-full h-full rounded-t-lg bg-white"
                         src={category.asset.url}
@@ -32,7 +34,7 @@ const CategoryCard: React.FC<ICategoryProps> = ({ category }) => {
                     {category.name}
                 </div>
             </div>
-        </a>
+        </Link>
     )
 }
 

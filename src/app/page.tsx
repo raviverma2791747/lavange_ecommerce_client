@@ -1,33 +1,31 @@
 import AllCategory from "@/components/AllCategory";
 import Announcement from "@/components/Announcement";
 import CollectionCarousel from "@/components/CollectionCarousel";
-import ProductCard from "@/components/ProductCard";
-import ProductCardShimmer from "@/components/ProductCardShimmer";
 import ProductCarousel from "@/components/ProductCarousel";
 import { homeConfigService } from "@/services";
+import { model } from "@/types/model";
 
 const Home: React.FC = async () => {
-  let homeConfig: any = null;
-  let featuredAnnouncements: any = [];
-  let exploreProducts: any = [];
-  let exploreCollections: any = [];
-  let featuredCategories: any = [];
-  let newArrivalProducts: any = [];
-  let bestSellerProducts: any = [];
-  let featuredCollections: any = [];
+  let homeConfig: model.IHomeConfig | null = null;
+  let featuredAnnouncements: model.IAnnouncement[] = [];
+  let exploreProducts: model.IProduct[] = [];
+  let exploreCollections: model.ICollection[] = [];
+  let featuredCategories: model.ICategory[] = [];
+  let newArrivalProducts: model.IProduct[] = [];
+  let bestSellerProducts: model.IProduct[] = [];
+  let featuredCollections: model.ICollection[] = [];
 
   const initHomeConfig = async () => {
     const response = await homeConfigService.getOne();
     if (response && response.status === 200) {
-      console.log(response);
-      homeConfig = response.data.homeConfig;
-      featuredAnnouncements = response.data.homeConfig.featuredAnnouncements ?? [];
-      exploreProducts = response.data.homeConfig.exploreProducts ?? [];
-      exploreCollections = response.data.homeConfig.exploreCollections ?? [];
-      featuredCategories = response.data.homeConfig.featuredCategories ?? [];
-      newArrivalProducts = response.data.homeConfig.newArrivalProducts ?? [];
-      bestSellerProducts = response.data.homeConfig.bestSellerProducts ?? [];
-      featuredCollections = response.data.homeConfig.featuredCollections ?? [];
+      homeConfig = response.data.homeConfig as model.IHomeConfig ?? null;
+      featuredAnnouncements = homeConfig.featuredAnnouncements ?? [];
+      exploreProducts = homeConfig.exploreProducts as model.IProduct[] ?? [];
+      exploreCollections = homeConfig.exploreCollections as model.ICollection[] ?? [];
+      featuredCategories = homeConfig.featuredCategories ?? [];
+      newArrivalProducts = homeConfig.newArrivalProducts as model.IProduct[] ?? [];
+      bestSellerProducts = homeConfig.bestSellerProducts as model.IProduct[] ?? [];
+      featuredCollections = homeConfig.featuredCollections as model.ICollection[] ?? [];
     }
   }
 
@@ -38,7 +36,7 @@ const Home: React.FC = async () => {
       {/* Categories */}
       <div className="border-b border-gray-200 mb-4 sticky top-[64px] z-30">
         <div className="bg-white max-w-7xl mx-auto py-4 px-4">
-          <AllCategory categories={featuredCategories}  loading={false}/>
+          <AllCategory categories={featuredCategories} loading={false} />
         </div>
       </div>
 
@@ -53,7 +51,7 @@ const Home: React.FC = async () => {
             <h2 className="font-semibold text-xl text-gray-800">Explore</h2>
             <p>Explore our wide range of products</p>
           </div>
-          <ProductCarousel products={exploreProducts} loading={false}/>
+          <ProductCarousel products={exploreProducts} loading={false} />
           <a
             href="/search"
             className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-primary-600 text-white hover:bg-primary-700"
@@ -65,28 +63,28 @@ const Home: React.FC = async () => {
         {/* Explore Collections */}
         <section>
           <h2 className="font-semibold text-xl text-center mb-4">Explore Collections</h2>
-          <CollectionCarousel collections={exploreCollections} loading={false}/>
+          <CollectionCarousel collections={exploreCollections} loading={false} />
         </section>
 
         {/* Best Sellers */}
         <section>
           <h2 className="font-semibold text-xl text-center mb-4">Best Sellers</h2>
-          <ProductCarousel products={bestSellerProducts} loading={false}/>
+          <ProductCarousel products={bestSellerProducts} loading={false} />
         </section>
 
         {/* New Arrivals */}
         <section>
           <h2 className="font-semibold text-xl text-center mb-4">New Arrivals</h2>
-          <ProductCarousel products={newArrivalProducts} loading={false}/>
+          <ProductCarousel products={newArrivalProducts} loading={false} />
         </section>
 
         {/* Featured Collections */}
-        {featuredCollections.map((collection: any, index: number) => (
+        {featuredCollections.map((collection, index: number) => (
           <section key={index}>
             <h2 className="font-semibold text-xl text-center mb-4 capitalize">
               {collection.name} Collection
             </h2>
-            <ProductCarousel products={collection.products} loading={false}/>
+            <ProductCarousel products={collection.products} loading={false} />
           </section>
         ))}
       </div>

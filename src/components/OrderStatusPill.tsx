@@ -8,7 +8,7 @@ interface IOrderStatusPill {
 
 const OrderStatusPill: React.FC<IOrderStatusPill> = ({ status }) => {
 
-    const ORDER_STATUS_CLASSES: any = {
+    const ORDER_STATUS_CLASSES: Record<number, string> = {
         [ORDER_STATUS.PENDING]: 'bg-yellow-100 text-yellow-500 border-yellow-500',
         [ORDER_STATUS.PLACED]: 'bg-green-100 text-green-500 border-green-500',
         [ORDER_STATUS.DELIVERED]: 'bg-green-100 text-green-500 border-green-500',

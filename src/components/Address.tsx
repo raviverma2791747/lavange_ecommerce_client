@@ -1,12 +1,13 @@
 import { ADDRESS_TYPE, STATUS } from '@/helper/constants';
 import { getByValue } from '@/helper/utils';
 import { userPrivateService } from '@/services';
+import { model } from '@/types/model';
 import { X } from '@phosphor-icons/react/dist/ssr';
 import React from 'react'
 
 
 interface IAddressProps {
-    address: any
+    address: model.IAddress
     onDelete: () => void
 }
 const Address: React.FC<IAddressProps> = ({ address, onDelete }) => {
@@ -17,7 +18,7 @@ const Address: React.FC<IAddressProps> = ({ address, onDelete }) => {
         const response = await userPrivateService.updateAddress(address);
         if (response && response.status === 200) {
             setAddressDeletionModal(false);
-            onDelete && onDelete();
+            if(onDelete) onDelete();
         }
     };
 

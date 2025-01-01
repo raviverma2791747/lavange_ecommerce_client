@@ -1,4 +1,5 @@
 import BaseService from "@/services/service";
+import { service } from "@/types/service";
 
 
 class ProductService extends BaseService {
@@ -15,7 +16,7 @@ class ProductService extends BaseService {
 
     // }
 
-    async getOneBySlug(slug: string) {
+    async getOneBySlug(slug: string): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/${slug}`)
             return await response.json()

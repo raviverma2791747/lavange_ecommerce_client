@@ -1,9 +1,10 @@
+import Link from "next/link"
 
 
 
 const CollectionCardShimmer = () => {
     return (
-        <a href="/" className="relative block rounded-lg border-gray-200 w-full">
+        <Link href="/" className="relative block rounded-lg border-gray-200 w-full">
             {/* <div className="absolute bg-gray-500 text-white text-xs p-1 rounded-tr-lg rounded-br-lg top-0 left-0 mt-2">
   Collection
  </div>  */}
@@ -13,7 +14,7 @@ const CollectionCardShimmer = () => {
                     <div className="bg-gray-200 animate-pulse rounded-lg w-6/12 mx-auto">&nbsp;</div>
                 </div>
             </div>
-        </a>
+        </Link>
 
     )
 }

@@ -1,4 +1,5 @@
 import BaseService from "@/services/service";
+import { service } from "@/types/service";
 
 
 class UserService extends BaseService {
@@ -16,9 +17,9 @@ class UserService extends BaseService {
     //         return await response.json()
     //     })
     // }
-    
 
-    login({ username, password }: any) {
+
+    login({ username, password }: service.User.ILoginParams): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/login`, {
                 method: 'POST',
@@ -32,7 +33,21 @@ class UserService extends BaseService {
         })
     }
 
-    logout() {
+    signup({ username, email, password, firstName, lastName, dob }: service.User.ISignupParams): Promise<service.IBaseResponse | null> {
+        return BaseService.handler(async () => {
+            const response = await fetch(`${this.API_URL}/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ username, email, password, firstName, lastName, dob })
+            })
+            return await response.json()
+        })
+    }
+
+    logout(): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/logout`, {
                 method: 'POST',
@@ -45,31 +60,19 @@ class UserService extends BaseService {
         })
     }
 
-    // async getOne(CategoryId: string) {
-    //     const response = await fetch(`${this.API_URL}${CategoryId}`)
-
-    // }
-
-    // async getAll() {
-    //     return BaseService.handler(async () => {            
-    //         const response = await fetch(`${this.API_URL}`)
-    //         return await response.json()
-    //     })
-    // }
-
-    // async getOne(id: string) {
-    //     return BaseService.handler(async () => {
-    //         const response = await fetch(`${this.API_URL}/${id}`)
-    //         return await response.json()
-    //     })
-    // }
-
-    // async getOneBySlug(slug: string) {
-    //     return BaseService.handler(async () => {
-    //         const response = await fetch(`${this.API_URL}/slug/${slug}`)
-    //         return await response.json()
-    //     })
-    // }
+    resetPassword({ email }: service.User.IResetPasswordParams): Promise<service.IBaseResponse | null> {
+        return BaseService.handler(async () => {
+            const response = await fetch(`${this.API_URL}/password/reset/link`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ email })
+            })
+            return await response.json()
+        })
+    }
 }
 
 export default UserService

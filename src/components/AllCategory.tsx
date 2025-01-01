@@ -1,11 +1,17 @@
 
 'use client';
+import { model } from '@/types/model';
 // import Carousel from 'react-multi-carousel';
 // import "react-multi-carousel/lib/styles.css";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
 
-const AllCategory = ({ categories, loading = true }: any) => {
+interface IAllCategory {
+  categories: model.ICategory[];
+  loading?: boolean
+}
+
+const AllCategory: React.FC<IAllCategory> = ({ categories, loading = true }) => {
   // const responsive = {
   //   all: {
   //     breakpoint: { max: 3000, min: 0 },
@@ -48,17 +54,17 @@ const AllCategory = ({ categories, loading = true }: any) => {
   return (
     <div>
       {loading ? (
-        <Splide  options={slideOptions} aria-label="All Categories" >
+        <Splide options={slideOptions} aria-label="All Categories" >
           {Array.from({ length: 10 }).map((_, index) => (
-             <SplideSlide key={index}>
-            <div className="bg-gray-200 animate-pulse w-[110px] rounded-lg">
-              &nbsp;
-            </div></SplideSlide>
+            <SplideSlide key={index}>
+              <div className="bg-gray-200 animate-pulse w-[110px] rounded-lg">
+                &nbsp;
+              </div></SplideSlide>
           ))}
         </Splide>
       ) : (
-        <Splide  options={slideOptions} aria-label="All Categories" >
-          {categories.map((category: any) => (
+        <Splide options={slideOptions} aria-label="All Categories" >
+          {categories.map((category) => (
             <SplideSlide key={category.slug}>
               <div>
                 <a href={`/category/${category.slug}`} className="font-semibold uppercase hover:text-primary-500">

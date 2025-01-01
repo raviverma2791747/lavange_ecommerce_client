@@ -1,45 +1,45 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 // import '@splidejs/react-splide/css';
 // import Carousel from 'react-multi-carousel';
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
-import Slider from 'react-slick';
+// import Slider from 'react-slick';
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { model } from '@/types/model';
 
 interface ProductMediaProps {
-    assets: any
+    assets: model.IAsset[];
 }
 const ProductMedia: React.FC<ProductMediaProps> = ({ assets }) => {
-    const [nav1, setNav1] = useState(null);
-    const [nav2, setNav2] = useState(null);
-    let sliderRef1 = useRef(null);
-    let sliderRef2 = useRef(null);
-
-    useEffect(() => {
-        setNav1(sliderRef1);
-        setNav2(sliderRef2);
-    }, []);
-
-    const settings = {
-        customPaging: function (i: number) {
-            return (
-                <a>
-                    <img src={assets[i].url} />
-                </a>
-            );
-        },
-        dots: true,
-        dotsClass: "slick-dots slick-thumb",
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1
-    };
-
     console.log(assets);
+    // const [nav1, setNav1] = useState(null);
+    // const [nav2, setNav2] = useState(null);
+    // let sliderRef1 = useRef(null);
+    // let sliderRef2 = useRef(null);
+
+    // useEffect(() => {
+    //     setNav1(sliderRef1);
+    //     setNav2(sliderRef2);
+    // }, []);
+
+    // const settings = {
+    //     customPaging: function (i: number) {
+    //         return (
+    //             <a>
+    //                 <img src={assets[i].url} />
+    //             </a>
+    //         );
+    //     },
+    //     dots: true,
+    //     dotsClass: "slick-dots slick-thumb",
+    //     infinite: true,
+    //     speed: 500,
+    //     slidesToShow: 1,
+    //     slidesToScroll: 1
+    // };
 
     // return (
     //     <div className="slider-container">
@@ -90,7 +90,7 @@ const ProductMedia: React.FC<ProductMediaProps> = ({ assets }) => {
     return (
         <div className='grid grid-cols-8 gap-4'>
             <div className="slider-containers col-span-1">
-                <Slider
+                {/* <Slider
                     slidesToScroll={1}
                     slidesToShow={5}
                     vertical={true}
@@ -102,7 +102,7 @@ const ProductMedia: React.FC<ProductMediaProps> = ({ assets }) => {
                     focusOnSelect={true}
                 >
                     {
-                        assets.map((asset: any, index: number) => (
+                        assets.map((asset, index: number) => (
                             <img
                                 key={index}
                                 className="rounded-lg border border-gray-200 w-full h-auto aspect-square object-contain"
@@ -110,15 +110,15 @@ const ProductMedia: React.FC<ProductMediaProps> = ({ assets }) => {
                             />
                         ))
                     }
-                </Slider>
+                </Slider> */}
             </div>
             <div className="slider-containers col-span-7">
-                <Slider
+                {/* <Slider
                     asNavFor={nav2} ref={slider => (sliderRef1 = slider)}
                     arrows={false}
                 >
                     {
-                        assets.map((asset: any, index: number) => (
+                        assets.map((asset, index: number) => (
                             <img
                                 key={index}
                                 className="rounded-lg border border-gray-200 w-full h-auto aspect-[5/3] object-contain"
@@ -126,7 +126,7 @@ const ProductMedia: React.FC<ProductMediaProps> = ({ assets }) => {
                             />
                         ))
                     }
-                </Slider>
+                </Slider> */}
             </div>
         </div>
 

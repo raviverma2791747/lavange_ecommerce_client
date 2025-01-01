@@ -1,9 +1,13 @@
 import React from 'react';
 
-const Breadcrumb = ({ routes }: any) => {
+interface IBreadcrumbProps {
+    routes: { name: string; path: string }[];
+}
+
+const Breadcrumb: React.FC<IBreadcrumbProps> = ({ routes }) => {
     return (
         <div className="mb-4">
-            {routes.map((route:any, index:number) => (
+            {routes.map((route, index: number) => (
                 <React.Fragment key={index}>
                     <a className="hover:text-primary-500" href={route.path}>
                         {route.name}

@@ -1,23 +1,23 @@
 'use client';
-import AddressForm from '@/components/AddressForm'
-import BreadcrumbShimmer from '@/components/BreadcrumbShimmer'
+import AddressForm, { IAddressForm } from '@/components/AddressForm'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import { userPrivateService } from '@/services'
 import { useRouter } from 'next/navigation';
 import React from 'react'
+import { toast } from 'react-toastify';
 
 const AddressNewPage = () => {
   const router = useRouter();
 
-  const updateAddress = async (address: any) => {
-    const response: any = await userPrivateService.updateAddress(address);
+  const updateAddress = async (address: IAddressForm) => {
+    const response = await userPrivateService.updateAddress(address);
     if (response && response.status === 200) {
-      alert("Address added successfully");
+      toast.success("Address added successfully");
       router.back();
     }
   }
   
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: IAddressForm) => {
     await updateAddress(data);
   }
 

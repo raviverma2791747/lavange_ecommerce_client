@@ -1,9 +1,10 @@
 import { Heart } from '@phosphor-icons/react/dist/ssr';
+import Link from 'next/link';
 import React from 'react';
 
 const ProductCardShimmer = ({ hidePrice = false, hideWishlist = false }) => {
   return (
-    <a
+    <Link
       href="/"
       className="block rounded-lg bg-white border border-gray-200 w-full"
     >
@@ -28,7 +29,7 @@ const ProductCardShimmer = ({ hidePrice = false, hideWishlist = false }) => {
           </div>
         )}
       </div>
-    </a>
+    </Link>
   );
 };
 

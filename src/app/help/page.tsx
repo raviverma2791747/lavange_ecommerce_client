@@ -1,32 +1,25 @@
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import { PUBLIC_COMPANY_TIMINGS, PUBLIC_COMPAY_ADDRESS, PUBLIC_SOCIAL_EMAIL, PUBLIC_SOCIAL_MOBILE } from '@/secrets';
 import { helpConfigService } from '@/services';
+import { model } from '@/types/model';
 import { CaretDown } from '@phosphor-icons/react/dist/ssr';
 import * as Accordion from "@radix-ui/react-accordion";
 import React from 'react'
 
 const HelpPage = async () => {
-    let helpConfig: any = null;
     const initHelpConfig = async () => {
         const response = await helpConfigService.getOne();
         if (response && response.status === 200) {
-            helpConfig = response.data.helpConfig ?? null;
+            return response.data.helpConfig as model.IHelpConfig ?? null;
         }
+        return null;
     }
-    await initHelpConfig();
+    const helpConfig: model.IHelpConfig | null = await initHelpConfig();
 
     if (!helpConfig) return <div>Help not found</div>;
 
     return (
         <div className="bg-white max-w-7xl mx-auto px-4 7xl:px-0 mb-4 mt-4">
-            {/* {#if loading}
-    <BreadcrumbShimmer count={1} />
-    <div className="flex gap-4 flex-col">
-      {#each { length: 5 } as item}
-        <OrderCardShimmer />
-      {/each}
-    </div>
-  {:else} */}
             <Breadcrumb
                 routes={[
                     {
@@ -35,8 +28,6 @@ const HelpPage = async () => {
                     },
                 ]}
             />
-            {/* {/if}  */}
-
             <div className="grid lg:grid-cols-3 gap-4 mb-4">
                 <div className="text-center">
                     <h2 className="font-semibold text-xl mb-2">Call us Queries</h2>
@@ -63,11 +54,12 @@ const HelpPage = async () => {
                 <h2 className="font-semibold text-3xl mb-4 text-center">FAQ</h2>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
                     {
-                        helpConfig.topics.map((topic: any, index: number) => <div key={index}>
+                        helpConfig.topics.map((topic, index: number) => <div key={index}>
                             <h3 className="text-xl font-semibold mb-4 text-center">{topic.title}</h3>
                             <Accordion.Root type='single' className="w-full">
                                 {
-                                    topic.faqs.map((item: any, i: number) => <Accordion.Item
+                                    topic.faqs.map((item, i: number) => <Accordion.Item
+                                        key={i}
                                         value={"item-" + i}
                                         className="group border-b border-dark-10 px-1.5"
                                     >
@@ -87,7 +79,7 @@ const HelpPage = async () => {
                                             //transition={slide}
                                             //transitionConfig={{ duration: 200 }}
                                             className="pb-[25px]  tracking-[-0.01em]"
-                                            
+
                                         >
                                             <p dangerouslySetInnerHTML={{ __html: item.answer }}>
 

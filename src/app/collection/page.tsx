@@ -3,16 +3,17 @@ import CollectionCard from '@/components/CollectionCard';
 import CollectionCardShimmer from '@/components/CollectionCardShimmer';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import { collectionService } from '@/services';
+import { model } from '@/types/model';
 import React from 'react'
 
 const CollectionsPage = async () => {
-    let collections: any = [];
+    let collections: model.ICollection[] = [];
     let loading = true;
 
     const initCollections = async () => {
         const response = await collectionService.getAll();
         if (response && response.status === 200) {
-            collections = response.data.collections ?? [];
+            collections = response.data.collections as model.ICollection[] ?? [];
         }
         loading = false;
     }
@@ -55,7 +56,7 @@ const CollectionsPage = async () => {
                             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
                         >
                             {
-                                collections.map((collection: any, index: number) => (
+                                collections.map((collection, index: number) => (
                                     <CollectionCard key={index} collection={collection} />
                                 ))
                             }

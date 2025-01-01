@@ -3,21 +3,22 @@ import Breadcrumb from '@/components/ui/Breadcrumb'
 import { DATE_FORMAT } from '@/helper/constants'
 import { formatDate } from '@/helper/utils'
 import { policyConfigService } from '@/services'
+import { model } from '@/types/model'
 import React from 'react'
 
 const PrivacyPolicyPage = async () => {
   let loading = true;
-  let privacy_policy: any = null;
   const initPolicy = async () => {
     const response = await policyConfigService.getAll();
     if (response && response.status === 200) {
-      const policies = response.data.policies as [] ?? [];
-      privacy_policy = policies.find((policy: any) => policy.name === 'privacy-policy');
+      const policies = response.data.policies as model.IPolicy[] ?? [];
+      return  policies.find((policy) => policy.name === 'privacy-policy') ?? null;
     }
-    loading = false;
+    return null;
   }
 
-  await initPolicy();
+  const privacy_policy: model.IPolicy | null = await initPolicy();
+  loading = false;
 
   if (!privacy_policy) return <div>Privacy Policy not found</div>;
 

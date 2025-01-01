@@ -2,24 +2,30 @@
 import React, { useEffect, useState } from "react";
 import { Heart, Share } from "@phosphor-icons/react/dist/ssr";
 import { STATUS } from "@/helper/constants";
-import { addUserWishlist, getUserWishlist, removeUserWishlist } from "@/helper/endpoints";
-import { httpClient } from "@/helper/httpClient";
 import { formatCurrency, formatPercentage } from "@/helper/utils";
+import { userPrivateService } from "@/services";
+import { ProductModel } from "@/models";
+import useStore from "@/helper/store";
 
+interface IProductCardProps {
+    product: ProductModel;
+    hidePrice?: boolean;
+    hideWishlist?: boolean;
+    hideShare?: boolean;
+}
 
-
-const ProductCard = ({
+const ProductCard: React.FC<IProductCardProps> = ({
     product,
     hidePrice = false,
     hideWishlist = false,
     hideShare = false,
-}: any) => {
-    const [wishlist, setWishlist] = useState([]);
-    const [userInfo, setUserInfo] = useState(null); // Replace with your user management logic
+}) => {
+    const [wishlist, setWishlist] = useState<ProductModel[]>([]);
+    const { userInfo } = useStore();
     const [activeSlide, setActiveSlide] = useState(0);
-    const [favorite, setFavorite] = useState(false);
-    const [price, setPrice] = useState(0);
-    const [compareAtPrice, setCompareAtPrice] = useState(0);
+    const [favorite, setFavorite] = useState<boolean>(false);
+    const [price, setPrice] = useState<number>(0);
+    const [compareAtPrice, setCompareAtPrice] = useState<number>(0);
 
     useEffect(() => {
         if (product.variants) {
@@ -40,59 +46,49 @@ const ProductCard = ({
         }
     }, [product.assets]);
 
-    // useEffect(() => {
-    //     const fetchWishlist = async () => {
-    //         const response = await httpClient(getUserWishlist);
-    //         if (response.status === 200) {
-    //             setWishlist(response.data.wishList);
-    //         }
-    //     };
-    //     fetchWishlist();
-    // }, []);
 
     useEffect(() => {
-        setFavorite(wishlist.some((item: any) => item._id === product._id));
+        setFavorite(wishlist.some((item) => item._id === product._id));
     }, [wishlist, product._id]);
 
     const calculateDiscount = (price: number, compareAtPrice: number) => {
         return (compareAtPrice - price) / compareAtPrice;
     };
 
-    const addToWishlist = async (e: any) => {
+    const initWishlist = async () => {
+        const response = await userPrivateService.getWishlist();
+        if (response && response.status === 200) {
+            setWishlist(response.data.wishList as ProductModel[] ?? []);
+        }
+    };
+
+    const addToWishlist = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         e.preventDefault();
         if (!userInfo) {
             // Handle login/signup modal
             return;
         }
-        const response = await httpClient(addUserWishlist, {
-            method: "POST",
-            payload: {
-                productId: product._id,
-            },
-        });
-        if (response.status === 200) {
-            const updatedWishlist = await httpClient(getUserWishlist);
-            setWishlist(updatedWishlist.data.wishList || []);
+        const response = await userPrivateService.addToWishlist({
+            productId: product._id,
+        })
+        if (response && response.status === 200) {
+            initWishlist();
         }
     };
 
-    const removeFromWishlist = async (e: any) => {
+    const removeFromWishlist = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         e.preventDefault();
-        const response = await httpClient(removeUserWishlist, {
-            method: "POST",
-            payload: {
-                productId: product._id,
-            },
-        });
-        if (response.status === 200) {
-            const updatedWishlist = await httpClient(getUserWishlist);
-            setWishlist(updatedWishlist.data.wishList || []);
+        const response = await userPrivateService.removeFromWishlist({
+            productId: product._id
+        })
+        if (response && response.status === 200) {
+            initWishlist();
         }
     };
 
-    const handleShare = (e: any) => {
+    const handleShare = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         e.preventDefault();
         // Implement sharing logic

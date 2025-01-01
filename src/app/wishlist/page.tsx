@@ -5,18 +5,13 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import { STATUS } from '@/helper/constants';
 import useStore from '@/helper/store';
 import { formatCurrency } from '@/helper/utils';
-import { userPrivateService } from '@/services';
 import { Trash } from '@phosphor-icons/react/dist/ssr';
-import React, { useEffect } from 'react'
+import Link from 'next/link';
+import React from 'react'
 
 const WishlistPage = () => {
-    const [loading, setLoading] = React.useState(false);
-
-    const { wishlist }= useStore();
-
-    // useEffect(() => {
-    //     initWishlist();
-    // },[])
+    const loading = false;
+    const { wishlist } = useStore();
 
     return (
         <div className="bg-white max-w-7xl mx-auto px-4 7xl:px-0 py-4">
@@ -30,17 +25,12 @@ const WishlistPage = () => {
                     ]}
                 />
             }
-
-            {/* <!-- <h1
-                className="hidden md:block font-semibold text-xl md:text-3xl text-center mb-4 capitalize"
-            >
-                Wishlist
-            </h1> --> */}
             <div className="grid gap-4 md:grid-cols-4 lg:grid-cols-6 py-4">
                 {
-                    wishlist.map((product: any, index:number) => (
+                    wishlist.map((product, index: number) => (
                         <>
-                            <a
+                            <Link
+                                key={index}
                                 className="w-full p-2 grid grid-cols-8 gap-2 cursor-pointer hover:bg-primary-250 md:hidden rounded-lg"
                                 href={`/product/${product.slug}`}
                             >
@@ -64,31 +54,39 @@ const WishlistPage = () => {
                                     }
                                 </div>
                                 <div>
+
+                                </div>
+                                <div>
                                     <button
                                         className="hover:text-red-500"
-                                    // on:click={(e) => {
-                                    //     e.stopImmediatePropagation();
-                                    //     e.preventDefault();
-                                    //     handleRemoveFromWishlist(product._id);
-                                    // }}
+                                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                            e.nativeEvent.stopImmediatePropagation();
+                                            e.preventDefault();
+                                            // handleRemoveFromWishlist(product._id);
+                                        }}
                                     >
                                         <Trash size={24} />
                                     </button>
                                 </div>
-                            </a>
+                            </Link>
+
 
                             <div className="hidden md:block">
                                 <ProductCard product={product} />
 
                                 <button
-                                // className="hover:text-red-500 inline-flex gap-2"
-                                // on:click={(e) => {
-                                //     handleRemoveFromWishlist(product._id);
-                                // }}
+                                    className="hover:text-red-500 inline-flex gap-2"
+                                    // onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                    //     // handleRemoveFromWishlist(product._id);
+                                    // }}
                                 >
                                     Remove <Trash size={24} />
                                 </button>
-                            </div></>
+
+
+                            </div>
+
+                        </>
                     ))
                 }
             </div>

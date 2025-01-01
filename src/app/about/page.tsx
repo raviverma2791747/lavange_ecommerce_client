@@ -95,7 +95,7 @@ const AboutPage = () => {
             <h2 className="mb-4 font-semibold">Get in Touch:</h2>
             <p className="mb-4">
                 We would love to hear from you! If you have any questions, suggestions, or
-                feedback, please don't hesitate to reach out to us.
+                feedback, please don&apos;t hesitate to reach out to us.
             </p>
             <h2 className="mb-4 font-semibold">Contact Us:</h2>
             <p className="mb-4">{PUBLIC_BRAND_NAME} An {PUBLIC_COMPANY_NAME} Brand</p>

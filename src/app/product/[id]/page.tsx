@@ -1,95 +1,91 @@
-import ProductCard from '@/components/ProductCard';
-import ProductCardShimmer from '@/components/ProductCardShimmer';
+
 import Breadcrumb from '@/components/ui/Breadcrumb';
-import WishlistButton from '@/components/WishlistButton';
 import { FACET_TYPE } from '@/helper/constants';
 import { formatCurrency } from '@/helper/utils';
-import { categoryService, collectionService, productService } from '@/services';
-import { Heart, Minus, Plus, Share, ShareFat, ShareNetwork } from '@phosphor-icons/react/dist/ssr';
+import { productService } from '@/services';
+import { Heart, Minus, Plus, ShareFat } from '@phosphor-icons/react/dist/ssr';
 import ProductMedia from '@/components/ProductMedia';
-import { Product } from '@/models';
+import { ProductModel } from '@/models';
 
 export interface IProductPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
   const { id: productID } = await params;
-  let loading: boolean = true;
-  let product: Product | null = null;
-  let quantity:number = 1;
+  // const loading: boolean = true;
+  const quantity: number = 1;
   const MAX_QUANTITY: number = 100;
   const MIN_QUANTITY: number = 1;
 
 
-  const slideOptions = {
-    // type: "loop",
-    perPage: 6,
-    gap: "0.5rem",
-    breakpoints: {
-      1280: {
-        perPage: 8,
-        gap: ".7rem",
-      },
-      1024: {
-        perPage: 5,
-        gap: ".7rem",
-      },
-      768: {
-        perPage: 4,
-        gap: ".7rem",
-      },
-      640: {
-        perPage: 3,
-        gap: ".7rem",
-      },
-      480: {
-        perPage: 2,
-        gap: ".7rem",
-      },
-    },
-  };
+  // const slideOptions = {
+  //   // type: "loop",
+  //   perPage: 6,
+  //   gap: "0.5rem",
+  //   breakpoints: {
+  //     1280: {
+  //       perPage: 8,
+  //       gap: ".7rem",
+  //     },
+  //     1024: {
+  //       perPage: 5,
+  //       gap: ".7rem",
+  //     },
+  //     768: {
+  //       perPage: 4,
+  //       gap: ".7rem",
+  //     },
+  //     640: {
+  //       perPage: 3,
+  //       gap: ".7rem",
+  //     },
+  //     480: {
+  //       perPage: 2,
+  //       gap: ".7rem",
+  //     },
+  //   },
+  // };
 
-  const productSlideOptions = {
-    // type: "loop",
-    perPage: 6,
-    gap: ".7rem",
-    breakpoints: {
-      1280: {
-        perPage: 8,
-        gap: ".7rem",
-      },
-      1024: {
-        perPage: 8,
-        gap: ".7rem",
-      },
-      768: {
-        perPage: 6,
-        gap: ".7rem",
-      },
-      640: {
-        perPage: 5,
-        gap: ".7rem",
-      },
-      480: {
-        perPage: 5,
-        gap: ".7rem",
-      },
-    },
-  };
+  // const productSlideOptions = {
+  //   // type: "loop",
+  //   perPage: 6,
+  //   gap: ".7rem",
+  //   breakpoints: {
+  //     1280: {
+  //       perPage: 8,
+  //       gap: ".7rem",
+  //     },
+  //     1024: {
+  //       perPage: 8,
+  //       gap: ".7rem",
+  //     },
+  //     768: {
+  //       perPage: 6,
+  //       gap: ".7rem",
+  //     },
+  //     640: {
+  //       perPage: 5,
+  //       gap: ".7rem",
+  //     },
+  //     480: {
+  //       perPage: 5,
+  //       gap: ".7rem",
+  //     },
+  //   },
+  // };
 
   const initProduct = async () => {
     const response = await productService.getOneBySlug(productID);
-    console.log(response);
     if (response && response.status === 200) {
-      const temp_product = response.data.product ?? null;
-      product = Product.fromOBJ(temp_product);
+      const temp_product = response.data.product as Record<string, unknown> ?? null;
+      return ProductModel.fromOBJ(temp_product);
     }
-    loading = false;
+    return null;
   };
-  await initProduct();
+  const product: ProductModel | null = await initProduct();
 
   // const initCategory = async (category_id: string) => {
   //   const response = await categoryService.getOne(category_id);
@@ -105,7 +101,6 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
   //   }
   // }
 
-
   // const fetchCollection = async () => {
   //   product.collections.forEach((collection_id: any) => {
   //     initCollection(collection_id);
@@ -120,9 +115,7 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
     }
   };
 
-
   if (product === null) return <div>Product not found</div>;
-
 
   return (
     <div id="product-page"
@@ -136,8 +129,8 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
               path: "/",
             },
             {
-              name: product.category.name,
-              path: `/category/${product.category.slug}`,
+              name:  typeof product.category === 'string' ?  product.category :  product.category.name,
+              path: `/category/${typeof product.category === 'string' ?  product.category :  product.category.slug}`,
             },
             {
               name: product.title,
@@ -207,16 +200,16 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
           {product.variantSchema ?
             <div className="flex flex-col gap-2 mb-4">
               {
-                product.variantSchema.map((variantOption: any) => (
-                  <div>
+                product.variantSchema.map((variantOption, index) => (
+                  <div key={index}>
                     <div className="block text-sm font-semibold mb-2">
                       {variantOption.displayName}
                     </div>
                     {variantOption.type === FACET_TYPE.COLOR ?
                       <div className="flex gap-4">
                         {
-                          variantOption.options.map((option: any) => (
-                            <div className="cursor-pointer">
+                          variantOption.options.map((option, variantOptionIndex) => (
+                            <div className="cursor-pointer" key={variantOptionIndex}>
                               <button
                                 className="border-2 rounded-full w-fit p-0.5"
                               // class:border-gray-200={option.value !==
@@ -241,8 +234,9 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
                       </div> : (variantOption.type === FACET_TYPE.SIZE ?
                         <div className="flex gap-4">
                           {
-                            variantOption.options.map((option: any) => (
+                            variantOption.options.map((option, variantOptionIndex) => (
                               <button
+                                key={variantOptionIndex}
                                 className="hover:scale-105 border border-gray-600 p-2 rounded-lg transition duration-100 ease-in-out cursor-pointer text-sm text-gray-600"
                               // class:border-primary-500={option.value ===
                               //   variantFilter[variantOption.name]}
@@ -274,7 +268,7 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
                         // }}
                         >
                           {
-                            variantOption.options.map((option: any) => (<option value={option.value}
+                            variantOption.options.map((option, optIndex) => (<option key={optIndex} value={option.value}
                             >{option.displayName}</option>))
                           }
 

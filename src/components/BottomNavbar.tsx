@@ -2,10 +2,15 @@
 import useStore from '@/helper/store';
 import { getAvatarName } from '@/helper/utils';
 import { BagSimple, Heart, House, MagnifyingGlass, UserCircle } from '@phosphor-icons/react/dist/ssr';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react'
 
 const BottomNavbar = () => {
-    const { userInfo, cart, wishlist } = useStore();
+    const { userInfo, cart, wishlist,setAuthModal } = useStore();
+    const pathname = usePathname();
+    const router = useRouter();
+
     return (
         <>
             <div className="h-16 md:hidden"></div>
@@ -13,18 +18,16 @@ const BottomNavbar = () => {
                 className="h-16 fixed bottom-0 w-full z-[100] bg-white shadow border-t border-gray-200 text-gray-600 md:hidden"
             >
                 <div className="grid grid-cols-5 gap-2 sm:mx-8">
-                    <a
+                    <Link
                         href="/search"
-                        className="p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer"
-                    //   class:text-primary-500={$page.url.pathname === "/search"}
+                        className={`p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer ${pathname === "/search" ? "text-primary-500" : ""}`}
                     >
                         <MagnifyingGlass className="h-6 w-6" />
                         <div className="text-sm">Search</div>
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         href="/cart"
-                        className="p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col relative items-center cursor-pointer"
-                    //   class:text-primary-500={$page.url.pathname === "/cart"}
+                        className={`p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer relative ${pathname === "/cart" ? "text-primary-500" : ""}`}
                     >
                         <BagSimple className="h-6 w-6" />
                         {cart.length > 0 &&
@@ -39,19 +42,17 @@ const BottomNavbar = () => {
                             </div>
                         }
                         <div className="text-sm">Bag</div>
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         href="/"
-                        //   class:text-primary-500={$page.url.pathname === "/"}
-                        className="p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer"
+                        className={`p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer ${pathname === "/" ? "text-primary-500" : ""}`}
                     >
                         <House className="h-6 w-6" />
                         <div className="text-sm">Home</div>
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         href="/wishlist"
-                        //   class:text-primary-500={$page.url.pathname === "wishlist"}
-                        className="p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer relative"
+                        className={`p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer ${pathname === "/wishlist" ? "text-primary-500" : ""}`}
                     >
                         <Heart className="h-6 w-6" />
                         {wishlist.length > 0 &&
@@ -66,17 +67,16 @@ const BottomNavbar = () => {
                             </div>
                         }
                         <div className="text-sm">Wishlist</div>
-                    </a>
+                    </Link>
                     <button
-                        //   class:text-primary-500={$page.url.pathname === "/account"}
-                        //   on:click={() => {
-                        //     if (!userInfo) {
-                        //       $login_signup_modal_open = true;
-                        //     } else {
-                        //       goto("/account");
-                        //     }
-                        //   }}
-                        className="p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer"
+                          onClick={() => {
+                            if (!userInfo) {
+                              setAuthModal(true);
+                            } else {
+                                router.push("/account");
+                            }
+                          }}
+                        className={`p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer ${pathname === "/account" ? "text-primary-500" : ""}`}
                     >
                         {userInfo ?
                             <div

@@ -1,18 +1,11 @@
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import { PUBLIC_BRAND_NAME, PUBLIC_COMPANY_CAREER_EMAIL, PUBLIC_COMPANY_CAREER_FORM, PUBLIC_COMPANY_NAME } from '@/secrets'
+import Link from 'next/link'
 import React from 'react'
 
 const CareerPage = () => {
   return (
     <div className="bg-white max-w-7xl mx-auto px-4 7xl:px-0 mb-4 mt-4">
-      {/* {#if loading}
-      <BreadcrumbShimmer count={1} />
-      <div className="flex gap-4 flex-col">
-        {#each { length: 5 } as item}
-          <OrderCardShimmer />
-        {/each}
-      </div>
-    {:else}  */}
       <Breadcrumb
         routes={[
           {
@@ -31,7 +24,7 @@ const CareerPage = () => {
         solutions. As an e-commerce platform, {PUBLIC_BRAND_NAME} offers a diverse range
         of customized products including T-shirts, mugs, keychains, and mousepads. Our
         commitment to a technology-first approach drives us to continuously innovate
-        and enhance our customers' experience.
+        and enhance our customers&apos; experience.
       </p>
 
       <h2 className="text-xl font-bold mb-4">Why Work with Us?</h2>
@@ -49,7 +42,7 @@ const CareerPage = () => {
         <li>
           Innovation: We are dedicated to staying at the forefront of technology.
           Our current projects include the development of an AI-integrated designing
-          tool to revolutionize our customers' creative process.
+          tool to revolutionize our customers&apos; creative process.
         </li>
         <li>
           Collaboration: We value teamwork and believe that great ideas come from a
@@ -75,7 +68,7 @@ const CareerPage = () => {
       <ul className="marker:text-primary-600 list-disc ms-4 mb-4">
         <li>
           Graphic Designers: If you have a passion for design and a keen eye for
-          detail, join our creative team to help bring our customers' ideas to life.
+          detail, join our creative team to help bring our customers&apos; ideas to life.
         </li>
         <li>
           Software Developers: Be a part of our tech team and contribute to the
@@ -83,7 +76,7 @@ const CareerPage = () => {
           designing tool.
         </li>
         <li>
-          Marketing Specialists: Help us spread the word about {PUBLIC_BRAND_NAME}'s
+          Marketing Specialists: Help us spread the word about {PUBLIC_BRAND_NAME}&apos;s
           amazing products and engage with our growing customer base through
           innovative marketing strategies.
         </li>
@@ -102,14 +95,14 @@ const CareerPage = () => {
       </p>
 
       <h2 className="text-xl font-bold mb-4">
-        Join us and be a part of something extraordinary. Together, let's create
+        Join us and be a part of something extraordinary. Together, let&apo;s create
         something amazing!
       </h2>
 
-      <a
+      <Link
         className="hover:scale-105 transition duration-100 ease-in-out py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none"
         href={PUBLIC_COMPANY_CAREER_FORM}
-        target="_blank">Apply Now</a>
+        target="_blank">Apply Now</Link>
     </div>
   )
 }

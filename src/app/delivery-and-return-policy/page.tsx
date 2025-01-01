@@ -3,21 +3,24 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import { DATE_FORMAT } from '@/helper/constants';
 import { formatDate } from '@/helper/utils';
 import { policyConfigService } from '@/services';
+import { model } from '@/types/model';
 import React from 'react'
 
 const DeliveryAndReturnPolicyPage = async () => {
   let loading = true;
-  let shipping_and_return_policy: any = null;
+
   const initPolicy = async () => {
     const response = await policyConfigService.getAll();
     if (response && response.status === 200) {
-      const policies = response.data.policies as [] ?? [];
-      shipping_and_return_policy = policies.find((policy: any) => policy.name === 'shipping-and-return-policy');
+      const policies = response.data.policies as model.IPolicy[] ?? [];
+      loading = false;
+      return policies.find((policy) => policy.name === 'shipping-and-return-policy') ?? null;
     }
     loading = false;
+    return null;
   }
 
-  await initPolicy();
+  const shipping_and_return_policy: model.IPolicy | null = await initPolicy();
 
   if (!shipping_and_return_policy) return <div>Delivery And Return Policy not found</div>;
 

@@ -1,44 +1,45 @@
 'use client';
-import useStore from '@/helper/store';
-import { userPrivateService, userService } from '@/services';
 import { CircleNotch } from '@phosphor-icons/react/dist/ssr';
 import React from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
 
-const EmailLogin = () => {
-    const { setUserInfo, setAuthModal } = useStore();
+interface IEmailLoginFormProps {
+    onSubmit?: (data: IEmailLoginForm) => Promise<void>,
+    onForgotPassword?: () => void
+    onSignup?: () => void
+}
+
+export interface IEmailLoginForm {
+    email: string,
+    password: string
+}
+
+const EmailLoginForm: React.FC<IEmailLoginFormProps> = ({ onSubmit, onForgotPassword, onSignup }) => {
     const [loading, setLoading] = React.useState(false);
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            email: '',
+            password: ''
+        },
+    });
 
-
-    const initUser = async () => {
-        const response: any = await userPrivateService.me();
-        if (response && response.status === 200) {
-            setUserInfo(response.data.user ?? null);
-        }
-    }
-
-    const onSubmit: SubmitHandler<any> = async (data) => {
+    const onSubmitHandler: SubmitHandler<IEmailLoginForm> = async (data) => {
         setLoading(true);
-        const response: any = await userService.login({ username: data.email, password: data.password });
-        if (response && response.status === 200) {
-            initUser();
-            setAuthModal(false);
-        }
+        if (onSubmit) await onSubmit(data);
         setLoading(false);
     }
 
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
             <div className="mb-4">
                 <input
                     type="email"
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
                     placeholder="Email"
-                    {...register('email')}
+                    {...register('email', { required: 'Email is required' })}
                     disabled={loading}
                 />
+                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
 
             <div className="mb-4">
@@ -46,18 +47,19 @@ const EmailLogin = () => {
                     type="password"
                     className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
                     placeholder="Password"
-                    {...register('password')}
+                    {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters' }, maxLength: { value: 16, message: 'Password must be at most 16 characters' } })}
                     disabled={loading}
                 />
+                {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
             </div>
 
             <div className="mb-4">
                 <button
                     type='button'
                     className="text-sm text-primary-500 underline cursor-pointer"
-                    // on:click={() => {
-                    //     state = STATE.FORGOT_PASSWORD;
-                    // }}
+                    onClick={() => {
+                        if(onForgotPassword) onForgotPassword();
+                    }}
                     disabled={loading}
                 >Forgot password?
                 </button>
@@ -84,14 +86,14 @@ const EmailLogin = () => {
                 <button
                     type='button'
                     className="text-sm text-primary-500 underline cursor-pointer"
-                    // on:click={() => {
-                    //     state = STATE.SIGNUP;
-                    // }}
+                    onClick={() => {
+                        if(onSignup) onSignup();
+                    }}
                     disabled={loading}
-                >Dont' have an account?</button>
+                >Don&apos;t have an account?</button>
             </div>
         </form>
     )
 }
 
-export default EmailLogin
+export default EmailLoginForm

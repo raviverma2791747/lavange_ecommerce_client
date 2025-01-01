@@ -1,6 +1,5 @@
 import React from 'react'
 import InputShimmer from './InputShimmer'
-import { Spinner } from '@phosphor-icons/react/dist/ssr'
 
 const AddressFormShimmer = () => {
     const fields = [

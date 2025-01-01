@@ -3,9 +3,10 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Head from "next/head";
 import { AuthModal } from "@/components/AuthModal";
 import BottomNavbar from "@/components/BottomNavbar";
+import ToastProvider from "@/components/ToastProvider";
+import WhatsappButton from "@/components/WhatsappButton";
 
 
 const poppins = Poppins({
@@ -45,9 +46,13 @@ export default function RootLayout({
           <Header />
           {children}
         </div>
-        <BottomNavbar/>
+        <BottomNavbar />
         <Footer />
         <AuthModal />
+        <div className="fixed bottom-16  md:bottom-8 left-8">
+          <WhatsappButton />
+        </div>
+        <ToastProvider />
       </body>
     </html>
   );

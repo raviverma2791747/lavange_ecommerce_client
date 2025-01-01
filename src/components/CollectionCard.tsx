@@ -1,18 +1,16 @@
+import { model } from "@/types/model"
+import Link from "next/link"
 
+interface CollectionCardProps {
+    collection: model.ICollection
+}
 
-const CollectionCard = ({
-    collection,
-}: any) => {
+const CollectionCard: React.FC<CollectionCardProps> = ({ collection }) => {
     return (
-        <a
+        <Link
             href={`/collection/${collection.slug}`}
             className="relative block rounded-lg w-full overflow-hidden"
         >
-            {/* <div
-                className="absolute bg-primary-500 text-white text-xs p-1 rounded-tr-lg rounded-br-lg top-0 left-0 mt-2"
-            >
-                Collection
-            </div>  */}
             <div className=" bg-gray-200 rounded-full aspect-square border-gray-200 border hover:border-primary-200  overflow-hidden">
                 {collection.asset &&
                     <img
@@ -26,7 +24,7 @@ const CollectionCard = ({
                     {collection.name}
                 </div>
             </div>
-        </a>
+        </Link>
     )
 }
 

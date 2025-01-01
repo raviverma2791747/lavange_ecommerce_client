@@ -11,6 +11,7 @@
 // import OpportunityService from "./public/opportunity";
 // import { BusinessService } from "./public/organization";
 
+import CheckoutPrivateService from "./private/checkout";
 import UserPrivateService from "./private/user";
 import CategoryService from "./public/category";
 import CollectionService from "./public/collection";
@@ -44,3 +45,4 @@ export const policyConfigService = new PolicyConfigService();
 export const userService = new UserService();
 
 export const userPrivateService = new UserPrivateService();
+export const checkoutPrivateService = new CheckoutPrivateService();

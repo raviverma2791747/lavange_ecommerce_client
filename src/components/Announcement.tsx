@@ -1,10 +1,16 @@
 'use client';
+import { model } from '@/types/model';
 // import Carousel from 'react-multi-carousel';
 // import "react-multi-carousel/lib/styles.css";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
 
-const Announcement = ({ announcements, loading = true }: any) => {
+interface AnnouncementProps {
+  announcements: model.IAnnouncement[];
+  loading?: boolean;
+}
+
+const Announcement: React.FC<AnnouncementProps> = ({ announcements, loading = true }) => {
   const slideOptions = {
     perPage: 3,
     gap: "1rem",
@@ -63,7 +69,7 @@ const Announcement = ({ announcements, loading = true }: any) => {
             </SplideSlide>
           ))
         ) : (
-          announcements.map((announcement: any, index: number) => (
+          announcements.map((announcement, index: number) => (
             <SplideSlide key={index}>
               <div className='w-full'>
                 <a href={announcement.ctaUrl}>
