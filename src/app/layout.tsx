@@ -40,7 +40,7 @@ export default function RootLayout({
         />
       </Head> */}
       <body
-        className={`${poppins.className}`}
+        className={`${poppins.className} overflow-x-hidden`}
       >
         <div className="min-h-screen">
           <Header />

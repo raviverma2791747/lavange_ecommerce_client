@@ -34,7 +34,7 @@ const Home: React.FC = async () => {
   return (
     <div>
       {/* Categories */}
-      <div className="border-b border-gray-200 mb-4 sticky top-[64px] z-30">
+      <div className="border-b border-gray-200 mb-4 sticky top-[64px] z-30 bg-white">
         <div className="bg-white max-w-7xl mx-auto py-4 px-4">
           <AllCategory categories={featuredCategories} loading={false} />
         </div>

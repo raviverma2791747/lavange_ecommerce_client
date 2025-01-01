@@ -2,7 +2,6 @@ import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import ProductCard from '@/components/ProductCard';
 import ProductCardShimmer from '@/components/ProductCardShimmer';
 import Breadcrumb from '@/components/ui/Breadcrumb';
-import { CategoryModel } from '@/models';
 import { categoryService } from '@/services';
 import { model } from '@/types/model';
 import React from 'react'
@@ -21,15 +20,14 @@ const CategoryPage: React.FC<ICategoryPageProps> = async ({ params }) => {
     const response = await categoryService.getOneBySlug(categoryID);
     console.log(response);
     if (response && response.status === 200) {
-      loading = false;
-      if (response.data.category) return CategoryModel.fromOBJ(response.data.category as model.ICategory);
+      if (response.data.category) return response.data.category as model.ICategory;
       else return null;
     }
-    loading = false;
     return null;
   }
 
-  const category: CategoryModel | null = await initCategory();
+  const category: model.ICategory | null = await initCategory();
+  loading = false;
 
   if (!category) return <div>Category not found</div>;
 

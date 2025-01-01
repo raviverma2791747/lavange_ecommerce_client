@@ -52,7 +52,7 @@ const BottomNavbar = () => {
                     </Link>
                     <Link
                         href="/wishlist"
-                        className={`p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer ${pathname === "/wishlist" ? "text-primary-500" : ""}`}
+                        className={`p-2 hover:text-primary-500 hover:bg-primary-50 flex flex-col items-center cursor-pointer relative ${pathname === "/wishlist" ? "text-primary-500" : ""}`}
                     >
                         <Heart className="h-6 w-6" />
                         {wishlist.length > 0 &&

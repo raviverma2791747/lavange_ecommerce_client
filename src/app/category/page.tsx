@@ -14,7 +14,7 @@ const CategoriesPage = async () => {
     const initCategories = async () => {
         const response = await categoryService.getAll();
         if (response && response.status === 200) {
-            categories =   (response.data.categories as model.ICategory[]).map(category => CategoryModel.fromOBJ(category)) ?? [];
+            categories = (response.data.categories as model.ICategory[]).map(category => CategoryModel.fromOBJ(category)) ?? [];
         }
     }
     await initCategories();
@@ -58,7 +58,7 @@ const CategoriesPage = async () => {
                             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
                         >
                             {
-                                categories.map((category, index: number) => <CategoryCard key={index} category={category} />)
+                                categories.map((category, index) => <CategoryCard key={index} category={category} />)
                             }
                         </div>
                         :

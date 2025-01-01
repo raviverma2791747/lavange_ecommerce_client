@@ -6,9 +6,10 @@ import { formatCurrency, formatPercentage } from "@/helper/utils";
 import { userPrivateService } from "@/services";
 import { ProductModel } from "@/models";
 import useStore from "@/helper/store";
+import { model } from "@/types/model";
 
 interface IProductCardProps {
-    product: ProductModel;
+    product: model.IProduct;
     hidePrice?: boolean;
     hideWishlist?: boolean;
     hideShare?: boolean;

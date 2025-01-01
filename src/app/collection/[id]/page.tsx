@@ -2,7 +2,6 @@ import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import ProductCard from '@/components/ProductCard';
 import ProductCardShimmer from '@/components/ProductCardShimmer';
 import Breadcrumb from '@/components/ui/Breadcrumb';
-import { CollectionModel } from '@/models';
 import { collectionService } from '@/services';
 import { model } from '@/types/model';
 import React from 'react'
@@ -20,12 +19,12 @@ const CollectionPage: React.FC<ICollectionPageProps> = async ({ params }) => {
   const initCollection = async () => {
     const response = await collectionService.getOneBySlug(collectionID);
     if (response && response.status === 200) {
-      return CollectionModel.fromOBJ(response.data.collection as model.ICollection) ?? null;
+      return response.data.collection as model.ICollection ?? null;
     }
     return null;
   }
 
-  const collection: CollectionModel | null = await initCollection();
+  const collection: model.ICollection | null = await initCollection();
   loading = false;
   if (!collection) return <div>Collection not found</div>;
 

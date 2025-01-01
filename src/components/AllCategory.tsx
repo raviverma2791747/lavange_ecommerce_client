@@ -1,78 +1,70 @@
 
 'use client';
 import { model } from '@/types/model';
-// import Carousel from 'react-multi-carousel';
-// import "react-multi-carousel/lib/styles.css";
-import { Splide, SplideSlide } from '@splidejs/react-splide';
-import '@splidejs/react-splide/css';
+// import { CaretLeft, CaretRight } from '@phosphor-icons/react/dist/ssr';
+import Link from 'next/link';
+import Slider from 'react-slick';
 
 interface IAllCategory {
   categories: model.ICategory[];
   loading?: boolean
 }
 
-const AllCategory: React.FC<IAllCategory> = ({ categories, loading = true }) => {
-  // const responsive = {
-  //   all: {
-  //     breakpoint: { max: 3000, min: 0 },
-  //     items: 10,
-  //     slidesToSlide: 1,
-  //   }
-  // };
+// function SampleNextArrow(props: any) {
+//   const { className, style, onClick } = props;
+//   return (
+//     <div
+//       className={`z-50 absolute -right-8 p-1.5  top-1/2 -translate-y-1/2 cursor-pointer bg-white shadow border border-gray-300 rounded-full`}
+//       onClick={onClick}
+//     >
+//       <CaretRight size={20} className='text-black' />
+//     </div>
+//   );
+// }
 
-  const slideOptions = {
-    gap: "0.75rem",
-    pagination: false,
-    arrows: false,
-    autoWidth: true,
-    autoplay: true,
-    rewind: true,
-    // breakpoints: {
-    //   1024: {
-    //     perMove: 1,
-    //     perPage: 6,
-    //     gap: ".7rem",
-    //     autoplay: true,
-    //   },
-    //   768: {
-    //     perPage: 5,
-    //     gap: ".7rem",
-    //     autoplay: true,
-    //   },
-    //   640: {
-    //     perPage: 4,
-    //     gap: ".7rem",
-    //     autoplay: true,
-    //   },
-    //   480: {
-    //     perPage: 3,
-    //     gap: ".7rem",
-    //     autoplay: true,
-    //   },
-    // },
+// function SamplePrevArrow(props: any) {
+//   const { className, style, onClick } = props;
+//   return (
+//     <div
+//       className={`z-50 absolute -left-8 p-1.5  top-1/2 -translate-y-1/2 cursor-pointer bg-white shadow border border-gray-300 rounded-full`}
+//       onClick={onClick}
+//     >
+//       <CaretLeft size={20} className='text-black' />
+//     </div>
+//   );
+// }
+
+const AllCategory: React.FC<IAllCategory> = ({ categories, loading = true }) => {
+  const settings = {
+    className: "slider variable-width",
+    dots: false,
+    infinite: false,
+    centerMode: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true,
+    // nextArrow: <SampleNextArrow />,
+    // prevArrow: <SamplePrevArrow />
   };
+
   return (
     <div>
       {loading ? (
-        <Splide options={slideOptions} aria-label="All Categories" >
+        <Slider {...settings} >
           {Array.from({ length: 10 }).map((_, index) => (
-            <SplideSlide key={index}>
-              <div className="bg-gray-200 animate-pulse w-[110px] rounded-lg">
-                &nbsp;
-              </div></SplideSlide>
+            <div className={`bg-gray-200 animate-pulse w-[110px] rounded-lg  ${index === 0 ? 'pr-1' : index === categories.length - 1 ? 'pl-1' : 'px-1'}`} key={index}>
+              &nbsp;
+            </div>
           ))}
-        </Splide>
+        </Slider>
       ) : (
-        <Splide options={slideOptions} aria-label="All Categories" >
-          {categories.map((category) => (
-            <SplideSlide key={category.slug}>
-              <div>
-                <a href={`/category/${category.slug}`} className="font-semibold uppercase hover:text-primary-500">
-                  {category.name}
-                </a>
-              </div></SplideSlide>
+        <Slider {...settings} >
+          {categories.map((category, index) => (
+            <Link key={category.slug} href={`/category/${category.slug}`} className={`font-semibold uppercase hover:text-primary-500  ${index === 0 ? 'pr-1' : index === categories.length - 1 ? 'pl-1' : 'px-1'}`}>
+              {category.name}
+            </Link>
           ))}
-        </Splide>
+        </Slider>
       )}
     </div>
   );
