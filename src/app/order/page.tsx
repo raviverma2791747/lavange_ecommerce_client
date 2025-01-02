@@ -6,6 +6,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import { OrderModel } from '@/models';
 import { userPrivateService } from '@/services';
 import { model } from '@/types/model';
+import Link from 'next/link';
 import React, { useEffect } from 'react'
 
 const OrdersPage = () => {
@@ -125,10 +126,10 @@ const OrdersPage = () => {
                 className="grow flex justify-center items-center flex-col gap-4 p-4 h-[calc(100vh-64px)]"
               >
                 <div>Your order history is empty</div>
-                <a
+                <Link
                   href="/search"
                   className="w-full sm:w-fit hover:scale-105 transition duration-100 ease-in-out py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none"
-                >Continue shopping</a>
+                >Continue shopping</Link>
               </div>
             }
           </>}

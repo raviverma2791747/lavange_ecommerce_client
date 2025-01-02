@@ -185,7 +185,8 @@ const OrderPage = () => {
                             <div className="grid gap-2">
                                 {
                                     Array(3).map((item, index) => (
-                                        <a
+                                        <Link
+                                            href={"/"}
                                             key={index}
                                             className="w-full p-2 flex gap-2 cursor-pointer rounded-lg border border-gray-200"
                                         >
@@ -230,7 +231,7 @@ const OrderPage = () => {
                                                     >
                                                 </p>
                                             </div>
-                                        </a>
+                                        </Link>
                                     ))
                                 }
                             </div>
@@ -310,17 +311,16 @@ const OrderPage = () => {
                                     <div className="font-semibold">Tracking</div>
                                     <div>
                                         Tracking ID: <span className="italic">
-                                            {order.shipping.trackingId}</span
-                                        >
+                                            {order.shipping.trackingId}</span>
                                     </div>
                                     <div>
-                                        <a
+                                        <Link
                                             href={order.shipping.trackingUrl}
                                             target="_blank"
                                             className="text-primary-500"
                                         >
                                             Track Your Order
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                                 :

@@ -3,6 +3,7 @@ import { getByValue } from '@/helper/utils';
 import { userPrivateService } from '@/services';
 import { model } from '@/types/model';
 import { X } from '@phosphor-icons/react/dist/ssr';
+import Link from 'next/link';
 import React from 'react'
 
 
@@ -38,7 +39,7 @@ const Address: React.FC<IAddressProps> = ({ address, onDelete }) => {
                     <div>{address.country}</div>
                 </div>
                 <div className="flex gap-4">
-                    <a href={`address/edit/${address._id}`} className="block text-primary-500">Edit</a>
+                    <Link href={`address/edit/${address._id}`} className="block text-primary-500">Edit</Link>
                     <button
                         className="text-primary-500"
                         onClick={() => setAddressDeletionModal(true)}>Remove</button>

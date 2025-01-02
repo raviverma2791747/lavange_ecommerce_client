@@ -4,6 +4,7 @@ import { formatCurrency, formatDate } from '@/helper/utils';
 import React from 'react'
 import OrderStatusPill from './OrderStatusPill';
 import { model } from '@/types/model';
+import Link from 'next/link';
 
 interface IOrderCardProps {
     order: model.IOrder
@@ -11,7 +12,7 @@ interface IOrderCardProps {
 
 const OrderCard: React.FC<IOrderCardProps> = ({ order }) => {
     return (
-        <a
+        <Link
             href={`/order/${order._id}`}
             className="block border border-gray-200 rounded-lg shadow-md"
         >
@@ -55,7 +56,7 @@ const OrderCard: React.FC<IOrderCardProps> = ({ order }) => {
             <div className="p-4 flex gap-4">
                 <div className="text-primary-500 underline">View</div>
             </div>
-        </a>
+        </Link>
     )
 }
 

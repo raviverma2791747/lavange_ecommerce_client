@@ -7,6 +7,7 @@ import { userPrivateService } from "@/services";
 import { ProductModel } from "@/models";
 import useStore from "@/helper/store";
 import { model } from "@/types/model";
+import Link from "next/link";
 
 interface IProductCardProps {
     product: model.IProduct;
@@ -96,7 +97,7 @@ const ProductCard: React.FC<IProductCardProps> = ({
     };
 
     return (
-        <a href={`/product/${product.slug}`} className="relative block rounded-lg bg-white w-full">
+        <Link href={`/product/${product.slug}`} className="relative block rounded-lg bg-white w-full">
             {compareAtPrice > 0 && (
                 <div className="absolute bg-green-500 font-semibold text-white text-sm p-1 rounded-tr-lg rounded-br-lg top-0 left-0 mt-2">
                     {formatPercentage(calculateDiscount(price, compareAtPrice))} Off
@@ -159,7 +160,7 @@ const ProductCard: React.FC<IProductCardProps> = ({
                     </>
                 )}
             </div>
-        </a>
+        </Link>
     );
 };
 

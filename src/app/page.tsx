@@ -4,6 +4,7 @@ import CollectionCarousel from "@/components/CollectionCarousel";
 import ProductCarousel from "@/components/ProductCarousel";
 import { homeConfigService } from "@/services";
 import { model } from "@/types/model";
+import Link from "next/link";
 
 const Home: React.FC = async () => {
   let homeConfig: model.IHomeConfig | null = null;
@@ -52,12 +53,12 @@ const Home: React.FC = async () => {
             <p>Explore our wide range of products</p>
           </div>
           <ProductCarousel products={exploreProducts} loading={false} />
-          <a
+          <Link
             href="/search"
             className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-primary-600 text-white hover:bg-primary-700"
           >
             Explore
-          </a>
+          </Link>
         </div>
 
         {/* Explore Collections */}

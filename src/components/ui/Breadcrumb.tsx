@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 interface IBreadcrumbProps {
@@ -9,9 +10,9 @@ const Breadcrumb: React.FC<IBreadcrumbProps> = ({ routes }) => {
         <div className="mb-4">
             {routes.map((route, index: number) => (
                 <React.Fragment key={index}>
-                    <a className="hover:text-primary-500" href={route.path}>
+                    <Link className="hover:text-primary-500" href={route.path}>
                         {route.name}
-                    </a>
+                    </Link>
                     {index < routes.length - 1 && <span> &nbsp;/&nbsp;</span>}
                 </React.Fragment>
             ))}

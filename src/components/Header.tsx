@@ -316,12 +316,12 @@ const Header = () => {
                                 <CartItem item={cart_item} disabled readonly />
                             </DropdownMenu.Item>))}
                                 <DropdownMenu.Item>
-                                    <a
+                                    <Link
                                         href="/cart"
                                         className="block w-full p-2 cursor-pointer hover:bg-gray-200 text-center underline"
                                     >
                                         View All
-                                    </a>
+                                    </Link>
                                 </DropdownMenu.Item>
                             </>
                         )}
@@ -355,7 +355,7 @@ const Header = () => {
                             <>
                                 {wishlist.slice(0, 3).map((product) => (
                                     <DropdownMenu.Item key={product.slug}>
-                                        <a
+                                        <Link
                                             className="w-full p-2 grid grid-cols-4 gap-2 cursor-pointer hover:bg-gray-200"
                                             href={`/product/${product.slug}`}
                                         >
@@ -373,16 +373,16 @@ const Header = () => {
                                             <div className="col-span-3">
                                                 <h1 className="font-semibold truncate">{product.title}</h1>
                                             </div>
-                                        </a>
+                                        </Link>
                                     </DropdownMenu.Item>
                                 ))}
                                 <DropdownMenu.Item>
-                                    <a
+                                    <Link
                                         href="/wishlist"
                                         className="block w-full p-2 cursor-pointer hover:bg-gray-200 text-center underline"
                                     >
                                         View All
-                                    </a>
+                                    </Link>
                                 </DropdownMenu.Item>
                             </>
                         )}

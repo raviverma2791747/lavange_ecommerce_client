@@ -9,6 +9,7 @@ import { MAX_QUANTITY, MIN_QUANTITY, STATUS } from '@/helper/constants';
 import { toast } from 'react-toastify';
 import Counter from './Counter';
 import { CartItemModel, ProductModel } from '@/models';
+import Link from 'next/link';
 
 export interface IOnRemoveParams {
     productId: string,
@@ -109,7 +110,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, disabled = false, readonly = 
                             }
                         </div>
                         <div className="grow">
-                            <a className="font-semibold hover:underline " href={`/product/${item.product.slug}`}>{item.product.title}</a>
+                            <Link className="font-semibold hover:underline " href={`/product/${item.product.slug}`}>{item.product.title}</Link>
 
                             {!item.isOutOfStock ?
                                 <>

@@ -1,8 +1,9 @@
+import Link from 'next/link'
 import React from 'react'
 
 const OrderCardShimmer = () => {
     return (
-        <a className="block border border-gray-200 rounded-lg shadow-md text-gray-400">
+        <Link href={"/"} className="block border border-gray-200 rounded-lg shadow-md text-gray-400">
             <div
                 className="border-b border-gray-200 grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4"
             >
@@ -42,7 +43,7 @@ const OrderCardShimmer = () => {
             <div className="p-4 flex gap-4">
                 <div className="text-grey-500 "><div className="bg-gray-200 animate-pulse rounded-lg w-16">&nbsp;</div></div>
             </div>
-        </a>
+        </Link>
 
     )
 }
