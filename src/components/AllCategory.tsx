@@ -1,9 +1,10 @@
 
 'use client';
 import { model } from '@/types/model';
+import dynamic from 'next/dynamic';
 // import { CaretLeft, CaretRight } from '@phosphor-icons/react/dist/ssr';
 import Link from 'next/link';
-import Slider from 'react-slick';
+const Slider = dynamic(() => import('react-slick'), { ssr: false })
 
 interface IAllCategory {
   categories: model.ICategory[];
