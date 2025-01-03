@@ -36,7 +36,6 @@ export default {
         transparent: "transparent",
       },
     },
-    plugins: [require("@tailwindcss/forms")],
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 } satisfies Config;
