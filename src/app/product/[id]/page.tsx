@@ -6,6 +6,7 @@ import { productService } from '@/services';
 import { Heart, Minus, Plus, ShareFat } from '@phosphor-icons/react/dist/ssr';
 import ProductMedia from '@/components/ProductMedia';
 import { ProductModel } from '@/models';
+import { model } from '@/types/model';
 
 export interface IProductPageProps {
   params: Promise<{
@@ -80,8 +81,9 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
   const initProduct = async () => {
     const response = await productService.getOneBySlug(productID);
     if (response && response.status === 200) {
-      const temp_product = response.data.product as Record<string, unknown> ?? null;
-      return ProductModel.fromOBJ(temp_product);
+      console.log(response);
+      const temp_product = response.data.product as model.IProduct ?? null;
+      return temp_product ? ProductModel.fromOBJ(temp_product) : null;
     }
     return null;
   };
@@ -115,7 +117,13 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
     }
   };
 
-  if (product === null) return <div>Product not found</div>;
+  if (product === null) return (<div className="flex flex-col items-center justify-center h-[calc(100vh-80px)]">
+    {/* <img src={not_found_img} alt="not found" className="w-1/2 mb-5" /> */}
+    <h1 className="font-semibold text-3xl">Oops! product not found</h1>
+    <p className="italic">
+      Maybe the product was unlisted or something went wrong!
+    </p>
+  </div>);
 
   return (
     <div id="product-page"
@@ -129,8 +137,8 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
               path: "/",
             },
             {
-              name:  typeof product.category === 'string' ?  product.category :  product.category.name,
-              path: `/category/${typeof product.category === 'string' ?  product.category :  product.category.slug}`,
+              name: typeof product.category === 'string' ? product.category : product.category.name,
+              path: `/category/${typeof product.category === 'string' ? product.category : product.category.slug}`,
             },
             {
               name: product.title,
