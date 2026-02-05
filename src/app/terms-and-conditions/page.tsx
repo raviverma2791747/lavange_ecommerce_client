@@ -1,5 +1,12 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { DATE_FORMAT } from '@/helper/constants';
 import { formatDate } from '@/helper/utils';
 import { policyConfigService } from '@/services';
@@ -30,18 +37,17 @@ const TermsAndConditionsPage = async () => {
       {loading ?
         <BreadcrumbShimmer count={2} /> :
         <>
-          <Breadcrumb
-            routes={[
-              {
-                name: "Home",
-                path: "/",
-              },
-              {
-                name: "Terms & Conditions",
-                path: `/terms-and-conditions`,
-              },
-            ]}
-          />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Terms and Conditions</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
           <div className="font-semibold mb-4">
             Last Updated {formatDate(
               terms_and_conditions.updatedAt,

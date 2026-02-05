@@ -1,7 +1,13 @@
 'use client';
 import { BagSimple, Heart, List, MagnifyingGlass, UserCircle } from '@phosphor-icons/react/dist/ssr'
 import React, { useEffect } from 'react'
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
 import useStore from '@/helper/store';
 import { userPrivateService, userService } from '@/services';
 import { getAvatarName, processCart } from '@/helper/utils';
@@ -68,7 +74,7 @@ const Header = () => {
             </div>
             <div className="grow">
                 <div className="lg:w-4/12 mx-auto relative">
-                    <input
+                    <Input
                         type="text"
                         placeholder="Search"
                         // bind:value={search_query}
@@ -249,9 +255,9 @@ const Header = () => {
                     </Dialog.Root> */}
             </div>
             <div className="hidden md:flex gap-4 items-center">
-                <DropdownMenu.Root>
-                    <DropdownMenu.Trigger
-                        className="hover:text-primary-500 text-gray-600 relative py-2"
+                <DropdownMenu>
+                    <DropdownMenuTrigger
+                        className="hover:text-primary-500 text-gray-600 relative py-2 outline-none"
                     >
                         <BagSimple size={24} />
                         {cart.length > 0 && (
@@ -263,8 +269,8 @@ const Header = () => {
                                 ></span>
                                 {cart.reduce((a, b) => a + b.quantity, 0) > 9 ? "9+" : cart.reduce((a, b) => a + b.quantity, 0)}
                             </div>)}
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
                         sideOffset={8}
                         align="end"
                         className="w-full max-w-[20rem] bg-white rounded-xl border border-muted bg-background py-2 shadow-lg z-[75]"
@@ -276,7 +282,7 @@ const Header = () => {
                             <p className="px-4 py-2 text-center">Your cart is empty</p>
                         ) : (
                             <>{cart.slice(0, 3).map((cart_item) =>
-                            (<DropdownMenu.Item key={cart_item._id}>
+                            (<DropdownMenuItem key={cart_item._id}>
                                 {/* <a
                                     className="w-full p-2 grid grid-cols-4 gap-2 cursor-pointer hover:bg-gray-200"
                                     href={`/product/${cart_item.product.slug}`}
@@ -314,23 +320,23 @@ const Header = () => {
                                     </div>
                                 </a> */}
                                 <CartItem item={cart_item} disabled readonly />
-                            </DropdownMenu.Item>))}
-                                <DropdownMenu.Item>
+                            </DropdownMenuItem>))}
+                                <DropdownMenuItem>
                                     <Link
                                         href="/cart"
                                         className="block w-full p-2 cursor-pointer hover:bg-gray-200 text-center underline"
                                     >
                                         View All
                                     </Link>
-                                </DropdownMenu.Item>
+                                </DropdownMenuItem>
                             </>
                         )}
-                    </DropdownMenu.Content>
-                </DropdownMenu.Root>
+                    </DropdownMenuContent>
+                </DropdownMenu>
 
-                <DropdownMenu.Root>
-                    <DropdownMenu.Trigger
-                        className="hover:text-primary-500 text-gray-600 relative py-2"
+                <DropdownMenu>
+                    <DropdownMenuTrigger
+                        className="hover:text-primary-500 text-gray-600 relative py-2 outline-none"
                     >
                         <Heart size={24} />
                         {wishlist.length > 0 && (
@@ -341,8 +347,8 @@ const Header = () => {
                             </div>
                         )}
 
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
                         sideOffset={8}
                         align="end"
                         className="w-full max-w-[20rem] bg-white rounded-xl border border-muted bg-background py-2 shadow-lg z-[75]"
@@ -354,9 +360,9 @@ const Header = () => {
                         ) : (
                             <>
                                 {wishlist.slice(0, 3).map((product) => (
-                                    <DropdownMenu.Item key={product.slug}>
+                                    <DropdownMenuItem key={product.slug}>
                                         <Link
-                                            className="w-full p-2 grid grid-cols-4 gap-2 cursor-pointer hover:bg-gray-200"
+                                            className="w-full grid grid-cols-4 gap-2 cursor-pointer"
                                             href={`/product/${product.slug}`}
                                         >
                                             <div>
@@ -374,25 +380,25 @@ const Header = () => {
                                                 <h1 className="font-semibold truncate">{product.title}</h1>
                                             </div>
                                         </Link>
-                                    </DropdownMenu.Item>
+                                    </DropdownMenuItem>
                                 ))}
-                                <DropdownMenu.Item>
+                                <DropdownMenuItem>
                                     <Link
                                         href="/wishlist"
-                                        className="block w-full p-2 cursor-pointer hover:bg-gray-200 text-center underline"
+                                        className="block w-full cursor-pointer text-center underline"
                                     >
                                         View All
                                     </Link>
-                                </DropdownMenu.Item>
+                                </DropdownMenuItem>
                             </>
                         )}
 
-                    </DropdownMenu.Content>
-                </DropdownMenu.Root>
+                    </DropdownMenuContent>
+                </DropdownMenu>
 
-                <DropdownMenu.Root>
-                    <DropdownMenu.Trigger
-                        className="text-gray-600 flex gap-2 py-2 px-3 border border-gray-200 rounded-full hover:shadow"
+                <DropdownMenu>
+                    <DropdownMenuTrigger
+                        className="text-gray-600 flex gap-2 py-2 px-3 border border-gray-200 rounded-full hover:shadow outline-none"
                     >
                         <List size={24} />
 
@@ -407,13 +413,13 @@ const Header = () => {
                             :
                             <UserCircle size={24} />
                         }
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
                         sideOffset={8}
                         align="end"
                         className="w-full max-w-[10rem] bg-white rounded-xl border border-muted bg-background py-2 shadow-lg z-[75]"
                     >
-                        {userInfo && (<><DropdownMenu.Item>
+                        {userInfo && (<><DropdownMenuItem>
                             <button className="flex items-center w-full gap-x-3.5 py-2 px-3 text-gray-800 hover:text-primary-500 hover:bg-primary-50 focus:outline-none focus:bg-gray-100"
                                 onClick={() => {
                                     router.push("/account");
@@ -421,8 +427,8 @@ const Header = () => {
                             >
                                 Account
                             </button>
-                        </DropdownMenu.Item>
-                            <DropdownMenu.Item>
+                        </DropdownMenuItem>
+                            <DropdownMenuItem>
                                 <button
                                     className="flex items-center w-full gap-x-3.5 py-2 px-3 text-gray-800 hover:text-primary-500 hover:bg-primary-50 focus:outline-none focus:bg-gray-100"
                                     onClick={() => {
@@ -431,8 +437,8 @@ const Header = () => {
                                 >
                                     Orders
                                 </button>
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
                                 <button
                                     className="flex items-center w-full gap-x-3.5 py-2 px-3 text-gray-800 hover:text-primary-500 hover:bg-primary-50 focus:outline-none focus:bg-gray-100"
                                     onClick={() => {
@@ -441,8 +447,8 @@ const Header = () => {
                                 >
                                     Cart
                                 </button>
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
                                 <button
                                     className="flex items-center w-full gap-x-3.5 py-2 px-3 text-gray-800 hover:text-primary-500 hover:bg-primary-50 focus:outline-none focus:bg-gray-100"
                                     onClick={() => {
@@ -451,8 +457,8 @@ const Header = () => {
                                 >
                                     Wishlist
                                 </button>
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
                                 <button
                                     className="flex items-center w-full gap-x-3.5 py-2 px-3 text-gray-800 hover:text-primary-500 hover:bg-primary-50 focus:outline-none focus:bg-gray-100"
                                     onClick={() => {
@@ -461,17 +467,17 @@ const Header = () => {
                                 >
                                     Help
                                 </button>
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
                                 <button
                                     className="flex items-center w-full gap-x-3.5 py-2 px-3 text-gray-800 hover:text-primary-500 hover:bg-primary-50 focus:outline-none focus:bg-gray-100"
                                     onClick={logout}
                                 >
                                     Logout
                                 </button>
-                            </DropdownMenu.Item></>)}
+                            </DropdownMenuItem></>)}
 
-                        {!userInfo && (<><DropdownMenu.Item>
+                        {!userInfo && (<><DropdownMenuItem>
                             <button
                                 className="flex items-center w-full gap-x-3.5 py-2 px-3 text-gray-800 hover:text-primary-500 hover:bg-primary-50 focus:outline-none focus:bg-gray-100"
                                 onClick={() => {
@@ -480,8 +486,8 @@ const Header = () => {
                             >
                                 Sign up
                             </button>
-                        </DropdownMenu.Item>
-                            <DropdownMenu.Item>
+                        </DropdownMenuItem>
+                            <DropdownMenuItem>
                                 <button
                                     data-hs-overlay="#hs-slide-up-animation-modal"
                                     className="flex items-center w-full gap-x-3.5 py-2 px-3 text-gray-800 hover:text-primary-500 hover:bg-primary-50 focus:outline-none focus:bg-gray-100"
@@ -491,9 +497,9 @@ const Header = () => {
                                 >
                                     Login
                                 </button>
-                            </DropdownMenu.Item></>)}
-                    </DropdownMenu.Content>
-                </DropdownMenu.Root>
+                            </DropdownMenuItem></>)}
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
         </div>
 

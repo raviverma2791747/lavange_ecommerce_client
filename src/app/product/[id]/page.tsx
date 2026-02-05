@@ -1,5 +1,12 @@
 
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { FACET_TYPE } from '@/helper/constants';
 import { formatCurrency } from '@/helper/utils';
 import { productService } from '@/services';
@@ -130,22 +137,27 @@ const ProductPage: React.FC<IProductPageProps> = async ({ params }) => {
       className="bg-white max-w-7xl mx-auto px-4 7xl:px-0 py-4 text-gray-800"
     >
       <div className="mb-4 flex">
-        <Breadcrumb
-          routes={[
-            {
-              name: "Home",
-              path: "/",
-            },
-            {
-              name: typeof product.category === 'string' ? product.category : product.category.name,
-              path: `/category/${typeof product.category === 'string' ? product.category : product.category.slug}`,
-            },
-            {
-              name: product.title,
-              path: `/product/${product.slug}`,
-            },
-          ]}
-        />
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            {product.category && (
+              <>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href={`/category/${typeof product.category === 'string' ? product.category : product.category.slug}`}>
+                    {typeof product.category === 'string' ? product.category : product.category.name}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+              </>
+            )}
+            <BreadcrumbItem>
+              <BreadcrumbPage>{product.title}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
 
         <div className="ms-auto">
           {!product.favorite ?

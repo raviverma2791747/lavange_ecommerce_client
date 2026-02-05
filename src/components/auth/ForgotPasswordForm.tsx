@@ -2,6 +2,8 @@
 import { CircleNotch } from '@phosphor-icons/react/dist/ssr';
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 interface ForgotPasswordFormProps {
     onLogin?: () => void,
@@ -23,39 +25,40 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onLogin, onSubm
 
     const onSubmitHandler: SubmitHandler<IForgotPasswordForm> = async (data) => {
         setLoading(true);
-        if(onSubmit) await onSubmit(data);
+        if (onSubmit) await onSubmit(data);
         setLoading(false);
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
             <div className="mb-4">
-                <input
+                <Input
                     type="email"
-                    className="w-full py-3 px-4 block border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
                     placeholder="Email"
                     {...register('email', { required: 'Email is required' })}
                     disabled={loading}
+                    className={errors.email ? "border-red-500" : ""}
                 />
                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
 
-            <button
+            <Button
                 type="submit"
-                className="mb-4 w-full hover:scale-105 transition duration-100 ease-in-out py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none"
+                className="mb-4 w-full"
                 disabled={loading}
             >
                 {loading ? <CircleNotch size={24} weight='bold' className="animate-spin" /> : 'Send Password Reset Link'}
-            </button>
+            </Button>
 
-            <div className="mb-4">
-                <button
+            <div className="mb-4 flex justify-center">
+                <Button
+                    variant="link"
                     type='button'
-                    className="text-sm text-primary-500 underline cursor-pointer"
+                    className="px-0 text-primary-500 h-auto"
                     onClick={() => {
-                        if(onLogin) onLogin();
+                        if (onLogin) onLogin();
                     }}
-                >Remember password?</button>
+                >Remember password?</Button>
             </div>
         </form>
     )

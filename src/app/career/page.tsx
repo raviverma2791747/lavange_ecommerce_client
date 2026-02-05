@@ -1,4 +1,9 @@
-import Breadcrumb from '@/components/ui/Breadcrumb'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+} from "@/components/ui/Breadcrumb"
 import { PUBLIC_BRAND_NAME, PUBLIC_COMPANY_CAREER_EMAIL, PUBLIC_COMPANY_CAREER_FORM, PUBLIC_COMPANY_NAME } from '@/secrets'
 import Link from 'next/link'
 import React from 'react'
@@ -6,14 +11,13 @@ import React from 'react'
 const CareerPage = () => {
   return (
     <div className="bg-white max-w-7xl mx-auto px-4 7xl:px-0 mb-4 mt-4">
-      <Breadcrumb
-        routes={[
-          {
-            name: "Career",
-            path: "/career",
-          },
-        ]}
-      />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbPage>Career</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <h1 className="text-2xl font-bold mb-4">Careers at {PUBLIC_BRAND_NAME}</h1>
       <h2 className="text-xl font-bold mb-4">Join Our Team at {PUBLIC_BRAND_NAME}!</h2>

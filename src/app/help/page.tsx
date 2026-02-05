@@ -1,4 +1,9 @@
-import Breadcrumb from '@/components/ui/Breadcrumb'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+} from "@/components/ui/Breadcrumb"
 import { PUBLIC_COMPANY_TIMINGS, PUBLIC_COMPAY_ADDRESS, PUBLIC_SOCIAL_EMAIL, PUBLIC_SOCIAL_MOBILE } from '@/secrets';
 import { helpConfigService } from '@/services';
 import { model } from '@/types/model';
@@ -20,14 +25,13 @@ const HelpPage = async () => {
 
     return (
         <div className="bg-white max-w-7xl mx-auto px-4 7xl:px-0 mb-4 mt-4">
-            <Breadcrumb
-                routes={[
-                    {
-                        name: "Help",
-                        path: "/help",
-                    },
-                ]}
-            />
+            <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Help</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <div className="grid lg:grid-cols-3 gap-4 mb-4">
                 <div className="text-center">
                     <h2 className="font-semibold text-xl mb-2">Call us Queries</h2>

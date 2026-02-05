@@ -1,6 +1,13 @@
 'use client';
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import UpdatePasswordForm, { IUpdatePasswordForm } from '@/components/UpdatePasswordForm';
 import { userPrivateService } from '@/services';
 import React from 'react'
@@ -26,18 +33,17 @@ const SecurityPage = () => {
                 {loading ?
                     <BreadcrumbShimmer count={2} />
                     :
-                    <Breadcrumb
-                        routes={[
-                            {
-                                name: "Account",
-                                path: "/account",
-                            },
-                            {
-                                name: "Security",
-                                path: "/account/security",
-                            },
-                        ]}
-                    />
+                    <Breadcrumb>
+                        <BreadcrumbList>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href="/account">Account</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>Security</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
                 }
             </div>
 

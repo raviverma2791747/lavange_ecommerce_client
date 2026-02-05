@@ -1,7 +1,14 @@
 'use client';
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import ProductCard from '@/components/ProductCard';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { STATUS } from '@/helper/constants';
 import useStore from '@/helper/store';
 import { formatCurrency } from '@/helper/utils';
@@ -18,17 +25,22 @@ const WishlistPage = () => {
             {loading ?
                 <BreadcrumbShimmer count={2} />
                 :
-                <Breadcrumb
-                    routes={[
-                        { name: "Home", path: "/" },
-                        { name: "Wishlist", path: "/wishlist" },
-                    ]}
-                />
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>Wishlist</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
             }
             <div className="grid gap-4 md:grid-cols-4 lg:grid-cols-6 py-4">
                 {
                     wishlist.map((product, index: number) => (
-                        <>
+                        <div key={index}>
                             <Link
                                 key={index}
                                 className="w-full p-2 grid grid-cols-8 gap-2 cursor-pointer hover:bg-primary-250 md:hidden rounded-lg"
@@ -76,9 +88,9 @@ const WishlistPage = () => {
 
                                 <button
                                     className="hover:text-red-500 inline-flex gap-2"
-                                    // onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                    //     // handleRemoveFromWishlist(product._id);
-                                    // }}
+                                // onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                //     // handleRemoveFromWishlist(product._id);
+                                // }}
                                 >
                                     Remove <Trash size={24} />
                                 </button>
@@ -86,7 +98,7 @@ const WishlistPage = () => {
 
                             </div>
 
-                        </>
+                        </div>
                     ))
                 }
             </div>

@@ -2,6 +2,9 @@ import { STATUS } from '@/helper/constants';
 import { formatCurrency } from '@/helper/utils';
 import { CartItemModel } from '@/models';
 import React from 'react'
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button"
 
 interface IOrderSummaryProps {
     orderSummary: {
@@ -21,115 +24,98 @@ const OrderSummary: React.FC<IOrderSummaryProps> = ({ orderSummary, loading, ena
 
     const handlePlaceOrder = () => {
         if (enableCheckout) {
-            if(onPlaceOrder) onPlaceOrder();
+            if (onPlaceOrder) onPlaceOrder();
         }
     }
     return (
-        <div className="border border-gray-200 rounded-lg p-4 mb-4">
-            <div className="font-semibold mb-4">Order Summary</div>
-            <div className="text-sm flex flex-col gap-4 mb-2">
-                <div className="flex">
-                    <div className="grow">Bag Total</div>
-                    <div
-                        className={`${loading ? 'w-16' : ''}`}
-                    >
+        <Card className="mb-4">
+            <CardHeader>
+                <CardTitle>Order Summary</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="text-sm flex flex-col gap-4">
+                    <div className="flex justify-between">
+                        <div>Bag Total</div>
+                        <div className={loading ? 'w-16' : ''}>
+                            {loading ?
+                                <div className=" bg-gray-300 rounded-lg h-4 w-full animate-pulse">&nbsp;</div> :
+                                orderSummary.cart.every((c) => c.product.status === STATUS.ACTIVE) && orderSummary.cart.every((c) => {
+                                    if (c.variant && !c.product.variants) {
+                                        return false;
+                                    }
+                                    return true;
+                                }) ?
+                                    formatCurrency(orderSummary.cart_total)
+                                    :
+                                    "---"
+                            }
+                        </div>
+                    </div>
+
+                    <div className="flex justify-between">
+                        <div>Bag Discount</div>
+                        <div className={loading ? 'w-16' : ''}>
+                            {loading ?
+                                <div className=" bg-gray-300 rounded-lg h-4 w-full animate-pulse">&nbsp;</div> :
+                                orderSummary.cart.every((c) => c.product.status === STATUS.ACTIVE) && orderSummary.cart.every((c) => {
+                                    if (c.variant && !c.product.variants) {
+                                        return false;
+                                    }
+                                    return true;
+                                }) ? `-${formatCurrency(orderSummary.discount)}` : "---"}
+                        </div>
+                    </div>
+
+                    <div className="flex justify-between">
+                        <div>Delivery Charges</div>
+                        <div className={loading ? 'w-16' : ''}>
+                            {loading ?
+                                <div className=" bg-gray-300 rounded-lg h-4 w-full animate-pulse">&nbsp;</div>
+                                : orderSummary.cart.every((c) => c.product.status === STATUS.ACTIVE) && orderSummary.cart.every((c) => {
+                                    if (c.variant && !c.product.variants) {
+                                        return false;
+                                    }
+                                    return true;
+                                }) ? formatCurrency(
+                                    orderSummary.delivery_charge
+                                ) : "---"}
+                        </div>
+                    </div>
+                </div>
+                <Separator />
+                <div className="flex justify-between font-semibold">
+                    <div>Total</div>
+                    <div className={loading ? 'w-16' : ''}>
                         {loading ?
-                            <div className=" bg-gray-300 rounded-lg">&nbsp;</div> :
-                            orderSummary.cart.every((c) => c.product.status === STATUS.ACTIVE) && orderSummary.cart.every((c) => {
+                            <div className=" bg-gray-300 rounded-lg h-4 w-full animate-pulse">&nbsp;</div>
+                            : orderSummary.cart.every((c) => c.product.status === STATUS.ACTIVE) && orderSummary.cart.every((c) => {
                                 if (c.variant && !c.product.variants) {
                                     return false;
                                 }
                                 return true;
                             }) ?
-                                formatCurrency(orderSummary.cart_total)
+                                formatCurrency(orderSummary.total)
                                 :
                                 "---"
                         }
                     </div>
                 </div>
-
-                <div className="flex">
-                    <div className="grow">Bag Discount</div>
-                    <div
-
-                        className={`${loading ? 'w-16' : ''}`}
-                    >
-                        {loading ?
-                            <div className=" bg-gray-300 rounded-lg">&nbsp;</div> :
-                            orderSummary.cart.every((c) => c.product.status === STATUS.ACTIVE) && orderSummary.cart.every((c) => {
-                                if (c.variant && !c.product.variants) {
-                                    return false;
-                                }
-                                return true;
-                            }) ? `-${formatCurrency(orderSummary.discount)}` : "---"}
-                    </div>
-                </div>
-
-                {/* <div className="flex">
-                    <div className="grow">Tax</div>
-                    <div
-                    //className={`${loading ? 'w-16' : ''}`}
-                    >
-                        {loading ?
-                            <div className=" bg-gray-300 rounded-lg">&nbsp;</div>
-                            : orderSummary.cart.every((c) => c.product.status === STATUS.ACTIVE) && orderSummary.cart.every((c) => {
-                                if (c.variant && !c.product.variants) {
-                                    return false;
-                                }
-                                return true;
-                            }) ? formatCurrency(orderSummary.tax) : "---"}
-                    </div>
-                </div> */}
-
-                <div className="flex">
-                    <div className="grow">Delivery Charges</div>
-                    <div
-                        className={`${loading ? 'w-16' : ''}`}
-                    >
-                        {loading ?
-                            <div className=" bg-gray-300 rounded-lg">&nbsp;</div>
-                            : orderSummary.cart.every((c) => c.product.status === STATUS.ACTIVE) && orderSummary.cart.every((c) => {
-                                if (c.variant && !c.product.variants) {
-                                    return false;
-                                }
-                                return true;
-                            }) ? formatCurrency(
-                                orderSummary.delivery_charge
-                            ) : "---"}
-                    </div>
-                </div>
-            </div>
-            <hr className="mb-2" />
-            <div className="flex font-semibold mb-4">
-                <div className="grow">Total</div>
-                <div
-                    className={`${loading ? 'w-16' : ''}`}
+            </CardContent>
+            <CardFooter className="flex-col gap-4">
+                <Button
+                    className="w-full"
+                    onClick={handlePlaceOrder}
+                    disabled={!enableCheckout}
                 >
-                    {loading ?
-                        <div className=" bg-gray-300 rounded-lg">&nbsp;</div>
-                        : orderSummary.cart.every((c) => c.product.status === STATUS.ACTIVE) && orderSummary.cart.every((c) => {
-                            if (c.variant && !c.product.variants) {
-                                return false;
-                            }
-                            return true;
-                        }) ?
-                            formatCurrency(orderSummary.total)
-                            :
-                            "---"
-                    }
-                </div>
-            </div>
-            <button
-                // href="/checkout"
-                className="w-full grow hover:scale-105 transition duration-100 ease-in-out py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none"
-                onClick={handlePlaceOrder}
-                disabled={!enableCheckout}>Place Order</button>
-            {!orderSummary.cart.every((c) => !c.isOutOfStock) &&
-                <p className="text-red-500 text-sm">
-                    Remove all out of stock or unavailable items to checkout
-                </p>
-            }
-        </div>
+                    Place Order
+                </Button>
+                {!orderSummary.cart.every((c) => !c.isOutOfStock) &&
+                    <p className="text-destructive text-sm text-center">
+                        Remove all out of stock or unavailable items to checkout
+                    </p>
+                }
+            </CardFooter>
+        </Card>
     )
 }
 

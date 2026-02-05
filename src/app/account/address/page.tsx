@@ -1,7 +1,14 @@
 'use client';
 import Address from '@/components/Address';
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import useStore from '@/helper/store';
 import { userPrivateService } from '@/services';
 import { model } from '@/types/model';
@@ -27,19 +34,17 @@ const AddressesPage = () => {
             {loading ?
                 < BreadcrumbShimmer count={2} />
                 :
-                < Breadcrumb
-                    routes={
-                        [
-                            {
-                                name: "Account",
-                                path: "/account",
-                            },
-                            {
-                                name: "Address",
-                                path: "/account/address",
-                            },
-                        ]}
-                />
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/account">Account</BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>Address</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
             }
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <Link

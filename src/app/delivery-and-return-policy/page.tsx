@@ -1,5 +1,12 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { DATE_FORMAT } from '@/helper/constants';
 import { formatDate } from '@/helper/utils';
 import { policyConfigService } from '@/services';
@@ -31,18 +38,17 @@ const DeliveryAndReturnPolicyPage = async () => {
       {loading ?
         <BreadcrumbShimmer count={2} /> :
         <>
-          <Breadcrumb
-            routes={[
-              {
-                name: "Home",
-                path: "/",
-              },
-              {
-                name: "Delivery and Return Policy",
-                path: `/delivery-and-return-policy`,
-              },
-            ]}
-          />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Delivery and Return Policy</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
           <div className="font-semibold mb-4">
             Last Updated {formatDate(
               shipping_and_return_policy.updatedAt,

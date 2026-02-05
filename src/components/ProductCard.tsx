@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import { Heart, Share } from "@phosphor-icons/react/dist/ssr";
+import { Button } from "@/components/ui/button";
 import { STATUS } from "@/helper/constants";
 import { formatCurrency, formatPercentage } from "@/helper/utils";
 import { userPrivateService } from "@/services";
@@ -104,12 +105,14 @@ const ProductCard: React.FC<IProductCardProps> = ({
                 </div>
             )}
             {!hideShare && (
-                <button
+                <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={handleShare}
-                    className="absolute top-2 right-2 hover:text-primary-500 bg-primary-50 rounded-full p-2"
+                    className="absolute top-2 right-2 hover:text-primary-500 bg-primary-50 rounded-full p-2 h-10 w-10"
                 >
                     <Share size={24} />
-                </button>
+                </Button>
             )}
             <div className="aspect-square bg-gray-200 rounded-t-lg">
                 {product.assets.length > 0 && (
@@ -126,19 +129,23 @@ const ProductCard: React.FC<IProductCardProps> = ({
                     {!hideWishlist && (
                         <div className="relative">
                             {!favorite ? (
-                                <button
-                                    className="hover:text-primary-500 rounded-full"
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="hover:text-primary-500 rounded-full h-10 w-10"
                                     onClick={addToWishlist}
                                 >
                                     <Heart size={24} />
-                                </button>
+                                </Button>
                             ) : (
-                                <button
-                                    className="text-primary-500 rounded-full"
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-primary-500 rounded-full h-10 w-10"
                                     onClick={removeFromWishlist}
                                 >
                                     <Heart size={24} weight="duotone" />
-                                </button>
+                                </Button>
                             )}
                         </div>
                     )}

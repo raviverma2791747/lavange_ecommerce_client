@@ -1,5 +1,10 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer'
-import Breadcrumb from '@/components/ui/Breadcrumb'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+} from "@/components/ui/Breadcrumb"
 import { AddressBook, BagSimple, CaretRight, Chats, Heart, Package, Power, Shield, UserCircle } from '@phosphor-icons/react/dist/ssr';
 import Link from 'next/link';
 import React from 'react'
@@ -11,14 +16,13 @@ const AccountPage = () => {
             {loading ?
                 <BreadcrumbShimmer count={1} />
                 :
-                <Breadcrumb
-                    routes={[
-                        {
-                            name: "Account",
-                            path: "/account",
-                        },
-                    ]}
-                />
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>Account</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
             }
             <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
                 <Link

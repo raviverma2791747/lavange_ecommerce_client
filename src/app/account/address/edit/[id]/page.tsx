@@ -2,7 +2,14 @@
 import AddressForm, { IAddressForm } from '@/components/AddressForm'
 import AddressFormShimmer from '@/components/AddressFormShimmer';
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb";
 import { userPrivateService } from '@/services';
 import { model } from '@/types/model';
 import { useParams } from 'next/navigation';
@@ -10,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { toast } from 'react-toastify';
 
-interface IAddresEditPageParams  {
+interface IAddresEditPageParams {
   id: string;
   [key: string]: string;
 }
@@ -56,23 +63,21 @@ const AddressEditPage = () => {
       {loading ?
         < BreadcrumbShimmer count={3} />
         :
-        <Breadcrumb
-          routes={
-            [
-              {
-                name: "Account",
-                path: "/account",
-              },
-              {
-                name: "Address",
-                path: "/account/address",
-              },
-              {
-                name: "Edit",
-                path: `/account/address/edit/${addressID}`,
-              }
-            ]}
-        />
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/account">Account</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/account/address">Address</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Edit</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       }
       {
         loading ? <AddressFormShimmer /> : address ? <AddressForm defaultValues={address} onSubmit={onSubmit} /> : <p>Address not found</p>

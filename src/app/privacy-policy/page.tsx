@@ -1,5 +1,12 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer'
-import Breadcrumb from '@/components/ui/Breadcrumb'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { DATE_FORMAT } from '@/helper/constants'
 import { formatDate } from '@/helper/utils'
 import { policyConfigService } from '@/services'
@@ -12,7 +19,7 @@ const PrivacyPolicyPage = async () => {
     const response = await policyConfigService.getAll();
     if (response && response.status === 200) {
       const policies = response.data.policies as model.IPolicy[] ?? [];
-      return  policies.find((policy) => policy.name === 'privacy-policy') ?? null;
+      return policies.find((policy) => policy.name === 'privacy-policy') ?? null;
     }
     return null;
   }
@@ -29,18 +36,17 @@ const PrivacyPolicyPage = async () => {
       {loading ?
         <BreadcrumbShimmer count={2} /> :
         <>
-          <Breadcrumb
-            routes={[
-              {
-                name: "Home",
-                path: "/",
-              },
-              {
-                name: "Privacy Policy",
-                path: `/privacy-policy`,
-              },
-            ]}
-          />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Privacy Policy</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
           <div className="font-semibold mb-4">
             Last Updated {formatDate(
               privacy_policy.updatedAt,

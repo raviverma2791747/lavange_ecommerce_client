@@ -1,7 +1,14 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import ProductCard from '@/components/ProductCard';
 import ProductCardShimmer from '@/components/ProductCardShimmer';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { categoryService } from '@/services';
 import { model } from '@/types/model';
 import React from 'react'
@@ -42,22 +49,21 @@ const CategoryPage: React.FC<ICategoryPageProps> = async ({ params }) => {
         }
       </div>
     </> : <>
-      <Breadcrumb
-        routes={[
-          {
-            name: "Home",
-            path: "/",
-          },
-          {
-            name: "Category",
-            path: `/category`,
-          },
-          {
-            name: category.name,
-            path: `/category/${category.slug}`,
-          },
-        ]}
-      />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/category">Category</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{category.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       {category.products.length ? (<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {
           category.products.map((product, index: number) => <ProductCard key={index} product={product} />)

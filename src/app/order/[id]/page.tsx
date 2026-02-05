@@ -2,7 +2,14 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer'
 import OrderStatusPill from '@/components/OrderStatusPill';
 import PaymentStatusPill from '@/components/PaymentStatusPill';
-import Breadcrumb from '@/components/ui/Breadcrumb'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { DATE_TIME_FORMAT, ORDER_STATUS, PAYMENT_MODE } from '@/helper/constants';
 import { formatCurrency, formatDate, getByValue } from '@/helper/utils';
 import { OrderModel } from '@/models';
@@ -43,19 +50,17 @@ const OrderPage = () => {
                 loading ?
                     <BreadcrumbShimmer count={2} />
                     :
-                    < Breadcrumb
-                        routes={
-                            [
-                                {
-                                    name: "Order",
-                                    path: "/order",
-                                },
-                                {
-                                    name: "Details",
-                                    path: `/order/${orderID}`,
-                                },
-                            ]}
-                    />
+                    <Breadcrumb>
+                        <BreadcrumbList>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href="/order">Order</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>Details</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
             }
             {
                 loading ?

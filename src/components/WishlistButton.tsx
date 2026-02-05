@@ -1,11 +1,12 @@
 'use client';
 import { Heart } from '@phosphor-icons/react/dist/ssr';
+import { Button } from "@/components/ui/button";
 
 const WishlistButton = () => {
     return (
         <>
-            <button className="hover:text-primary-500"><Heart size={24} /></button>
-            <button className="text-primary-500"><Heart size={24} weight='duotone' /></button>
+            <Button variant="ghost" size="icon" className="hover:text-primary-500 rounded-full h-10 w-10"><Heart size={24} /></Button>
+            <Button variant="ghost" size="icon" className="text-primary-500 rounded-full h-10 w-10"><Heart size={24} weight='duotone' /></Button>
         </>
     )
 }

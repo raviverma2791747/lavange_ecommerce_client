@@ -1,5 +1,12 @@
 'use client';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import useStore from '@/helper/store';
 import React from 'react'
 
@@ -10,18 +17,17 @@ const ProfilePage = () => {
 
     return (
         < div className="bg-white max-w-5xl mx-auto px-4 5xl:px-0 mt-4" >
-            <Breadcrumb
-                routes={[
-                    {
-                        name: "Account",
-                        path: "/account",
-                    },
-                    {
-                        name: "Profile",
-                        path: "/account/profile",
-                    },
-                ]}
-            />
+            <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/account">Account</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Profile</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <div className="mb-4">
                 <div className="font-semibold">First Name</div>
                 <div>

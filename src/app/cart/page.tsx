@@ -2,7 +2,14 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import CartItem, { IOnAddParams, IOnRemoveParams } from '@/components/CartItem';
 import CartItemShimmer from '@/components/CartItemShimmer';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { STATUS } from '@/helper/constants';
 import useStore from '@/helper/store';
 import { formatCurrency, processCart } from '@/helper/utils';
@@ -117,12 +124,17 @@ const CartPage = () => {
     return (
         <div className="bg-white max-w-7xl mx-auto px-4 7xl:px-0 py-4">
 
-            <Breadcrumb
-                routes={[
-                    { name: "Home", path: "/" },
-                    { name: "Bag", path: "/cart" },
-                ]}
-            />
+            <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Bag</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
 
             <div className="grid md:grid-cols-3 gap-4">
                 <div className="grid gap-4 pt-4 md:pt-0 md:col-span-2">

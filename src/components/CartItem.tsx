@@ -1,10 +1,14 @@
-'use client';
 import { formatCurrency } from '@/helper/utils';
 import { Trash } from '@phosphor-icons/react/dist/ssr';
 import React from 'react'
-import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel"
+import { Button } from "@/components/ui/button"
 import { MAX_QUANTITY, MIN_QUANTITY, STATUS } from '@/helper/constants';
 import { toast } from 'react-toastify';
 import Counter from './Counter';
@@ -33,17 +37,6 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item, disabled = false, readonly = false, onDelete, onRemove, onAdd }) => {
-    const settings = {
-        //dots: true,
-        arrows: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        cssEase: "linear"
-    };
 
     const onRemoveHandler = async (qty: number) => {
         if (onRemove && typeof item.product !== "string") {
@@ -92,19 +85,23 @@ const CartItem: React.FC<CartItemProps> = ({ item, disabled = false, readonly = 
                     <>
                         <div className="w-1/6 min-w-20  max-w-36">
                             {item.product.assets.length ?
-                                <Slider {...settings}>
-                                    {
-                                        item.product.assets.map((asset, index) => (
-                                            <img
-                                                key={index}
-                                                className="aspect-square object-cover rounded-lg"
-                                                src={asset.url}
-                                                alt={item.product instanceof ProductModel ? item.product.title : ''}
-                                            />
-                                        ))
-                                    }
-
-                                </Slider>
+                                <div className="group relative">
+                                    <Carousel opts={{ loop: true }} className="w-full">
+                                        <CarouselContent>
+                                            {item.product.assets.map((asset, index) => (
+                                                <CarouselItem key={index}>
+                                                    <img
+                                                        className="aspect-square object-cover rounded-lg w-full"
+                                                        src={asset.url}
+                                                        alt={item.product instanceof ProductModel ? item.product.title : ''}
+                                                    />
+                                                </CarouselItem>
+                                            ))}
+                                        </CarouselContent>
+                                        <CarouselPrevious className="left-1 size-6 hidden group-hover:flex" />
+                                        <CarouselNext className="right-1 size-6 hidden group-hover:flex" />
+                                    </Carousel>
+                                </div>
                                 :
                                 <div className="aspect-square bg-gray-300 rounded-lg"></div>
                             }
@@ -188,7 +185,9 @@ const CartItem: React.FC<CartItemProps> = ({ item, disabled = false, readonly = 
                             !readonly &&
 
                             <div>
-                                <button
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
                                     disabled={disabled}
                                     className="hover:text-red-500 disabled:text-gray-300 disabled:cursor-not-allowed"
                                     onClick={() => {
@@ -198,7 +197,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, disabled = false, readonly = 
                                     }}
                                 >
                                     <Trash size={24} />
-                                </button>
+                                </Button>
                             </div>
                         }
                     </>

@@ -1,7 +1,14 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import CollectionCard from '@/components/CollectionCard';
 import CollectionCardShimmer from '@/components/CollectionCardShimmer';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { collectionService } from '@/services';
 import { model } from '@/types/model';
 import React from 'react'
@@ -36,18 +43,17 @@ const CollectionsPage = async () => {
                 </>
                 :
                 <>
-                    <Breadcrumb
-                        routes={[
-                            {
-                                name: "Home",
-                                path: "/",
-                            },
-                            {
-                                name: "Collection",
-                                path: `/collection`,
-                            },
-                        ]}
-                    />
+                    <Breadcrumb>
+                        <BreadcrumbList>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>Collection</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
                     {/* <h1 className="font-semibold text-3xl text-center mb-4 capitalize">
                 {collection.name} Collection
             </h1>  */}

@@ -2,7 +2,14 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer';
 import OrderCard from '@/components/OrderCard';
 import OrderCardShimmer from '@/components/OrderCardShimmer';
-import Breadcrumb from '@/components/ui/Breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { OrderModel } from '@/models';
 import { userPrivateService } from '@/services';
 import { model } from '@/types/model';
@@ -16,7 +23,7 @@ const OrdersPage = () => {
   const initOrders = async () => {
     const response = await userPrivateService.getAllOrders();
     if (response && response.status === 200) {
-      setOrders(  (response.data.orders as model.IOrder[]).map((order) => OrderModel.fromOBJ(order)) ?? []);
+      setOrders((response.data.orders as model.IOrder[]).map((order) => OrderModel.fromOBJ(order)) ?? []);
     }
     setLoading(false);
   }
@@ -42,14 +49,17 @@ const OrdersPage = () => {
           </>
           :
           <>
-            <Breadcrumb
-              routes={[
-                {
-                  name: "Order",
-                  path: "/order",
-                },
-              ]}
-            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Order</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
             {/* <!-- <h1 className="hidden md:block font-semibold text-3xl text-center mb-4">
         Orders
       </h1> --> */}
@@ -63,6 +73,7 @@ const OrdersPage = () => {
             applied_filters = {
               ...applied_filters,
               sort: s,
+              order: d,
               order: d,
             };
           }}

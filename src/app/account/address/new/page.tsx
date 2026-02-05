@@ -1,6 +1,13 @@
 'use client';
 import AddressForm, { IAddressForm } from '@/components/AddressForm'
-import Breadcrumb from '@/components/ui/Breadcrumb'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { userPrivateService } from '@/services'
 import { useRouter } from 'next/navigation';
 import React from 'react'
@@ -16,7 +23,7 @@ const AddressNewPage = () => {
       router.back();
     }
   }
-  
+
   const onSubmit = async (data: IAddressForm) => {
     await updateAddress(data);
   }
@@ -24,23 +31,21 @@ const AddressNewPage = () => {
   return (
     <div className="bg-white max-w-xl mx-auto px-4 xl:px-0 mb-24 pt-4">
 
-      <Breadcrumb
-        routes={
-          [
-            {
-              name: "Account",
-              path: "/account",
-            },
-            {
-              name: "Address",
-              path: "/account/address",
-            },
-            {
-              name: "New",
-              path: `/account/address/new`,
-            }
-          ]}
-      />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/account">Account</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/account/address">Address</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>New</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <AddressForm onSubmit={onSubmit} />
     </div>

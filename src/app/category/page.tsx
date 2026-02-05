@@ -1,7 +1,14 @@
 import BreadcrumbShimmer from '@/components/BreadcrumbShimmer'
 import CategoryCard from '@/components/CategoryCard'
 import CategoryCardShimmer from '@/components/CategoryCardShimmer'
-import Breadcrumb from '@/components/ui/Breadcrumb'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/Breadcrumb"
 import { CategoryModel } from '@/models'
 import { categoryService } from '@/services'
 import { model } from '@/types/model'
@@ -38,18 +45,17 @@ const CategoriesPage = async () => {
                 </>
                 :
                 <>
-                    <Breadcrumb
-                        routes={[
-                            {
-                                name: "Home",
-                                path: "/",
-                            },
-                            {
-                                name: "Category",
-                                path: `/category`,
-                            },
-                        ]}
-                    />
+                    <Breadcrumb>
+                        <BreadcrumbList>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>Category</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
                     {/* <h1 className="font-semibold text-3xl text-center mb-4 capitalize">
                         {collection.name} Collection
                     </h1>  */}
