@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ADDRESS_TYPE } from '@/helper/constants';
 import state_list from '@/helper/state_list';
 import { CircleNotch } from '@phosphor-icons/react/dist/ssr';
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import {
     Form,
     FormControl,

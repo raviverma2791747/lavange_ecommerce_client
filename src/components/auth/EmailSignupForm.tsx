@@ -2,7 +2,7 @@
 import { CircleNotch } from '@phosphor-icons/react/dist/ssr';
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/input"
 
 interface IEmailSignupFormProps {

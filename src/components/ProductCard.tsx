@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import { Heart, Share } from "@phosphor-icons/react/dist/ssr";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { STATUS } from "@/helper/constants";
 import { formatCurrency, formatPercentage } from "@/helper/utils";
 import { userPrivateService } from "@/services";

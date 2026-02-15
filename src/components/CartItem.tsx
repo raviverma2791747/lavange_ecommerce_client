@@ -8,7 +8,7 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import { MAX_QUANTITY, MIN_QUANTITY, STATUS } from '@/helper/constants';
 import { toast } from 'react-toastify';
 import Counter from './Counter';

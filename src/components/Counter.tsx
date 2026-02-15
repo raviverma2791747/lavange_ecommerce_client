@@ -1,7 +1,7 @@
 'use client';
 import { Minus, Plus } from '@phosphor-icons/react/dist/ssr';
 import React from 'react'
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/input"
 
 interface ICounterProps {

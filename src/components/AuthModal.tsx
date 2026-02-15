@@ -11,7 +11,7 @@ import useStore from '@/helper/store';
 import EmailAuth from './auth/EmailAuth';
 import Link from 'next/link';
 import { PUBLIC_API_URL } from '@/secrets';
-import { buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/Button"
 import { cn } from "@/lib/utils"
 
 const AUTH_MODE = {

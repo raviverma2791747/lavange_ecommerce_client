@@ -1,6 +1,6 @@
 'use client';
 import { Heart } from '@phosphor-icons/react/dist/ssr';
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 const WishlistButton = () => {
     return (

@@ -4,7 +4,7 @@ import { CartItemModel } from '@/models';
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 
 interface IOrderSummaryProps {
     orderSummary: {
