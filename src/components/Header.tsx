@@ -57,7 +57,7 @@ const Header = () => {
     }
 
     useEffect(() => {
-        initUser();
+        // initUser();
     }, []);
 
     useEffect(() => {
