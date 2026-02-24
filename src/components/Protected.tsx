@@ -2,14 +2,15 @@
 import React from 'react'
 import useStore from "@/helper/store";
 import { Barricade, Lock } from "@phosphor-icons/react/dist/ssr";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface IProtectedProps {
     children: React.ReactNode;
 }
 const Protected: React.FC<IProtectedProps> = ({ children }) => {
     const router = useRouter();
-    const { userInfo, authenticating, setAuthModal } = useStore();
+    const pathname = usePathname();
+    const { userInfo, authenticating } = useStore();
 
     if (userInfo) return <>{children}</>
 
@@ -34,8 +35,7 @@ const Protected: React.FC<IProtectedProps> = ({ children }) => {
                     <button
                         className="w-full sm:w-fit hover:scale-105 transition duration-100 ease-in-out py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none"
                         onClick={() => {
-                            router.push("/");
-                            setAuthModal(true);
+                            router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
                         }}>Continue to Login</button>
                 </div>
             </div>

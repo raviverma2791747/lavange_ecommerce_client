@@ -37,8 +37,11 @@ const EmailSignupForm: React.FC<IEmailSignupFormProps> = ({ onLogin, onSubmit })
 
     const onSubmitHandler: SubmitHandler<IEmailSignupForm> = async (data) => {
         setLoading(true);
-        if (onSubmit) await onSubmit(data);
-        setLoading(false);
+        try {
+            if (onSubmit) await onSubmit(data);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (

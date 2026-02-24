@@ -7,7 +7,7 @@ class UserService extends BaseService {
 
     constructor() {
         super()
-        this.API_URL = UserService.BASE_API_URL + '/public/user'
+        this.API_URL = UserService.BASE_API_URL + '/v1/auth'
     }
 
 
@@ -60,7 +60,7 @@ class UserService extends BaseService {
         })
     }
 
-    resetPassword({ email }: service.User.IResetPasswordParams): Promise<service.IBaseResponse | null> {
+    resetPassword({ email, url }: service.User.IResetPasswordParams): Promise<service.IBaseResponse | null> {
         return BaseService.handler(async () => {
             const response = await fetch(`${this.API_URL}/password/reset/link`, {
                 method: 'POST',
@@ -68,7 +68,7 @@ class UserService extends BaseService {
                     'Content-Type': 'application/json'
                 },
                 credentials: 'include',
-                body: JSON.stringify({ email })
+                body: JSON.stringify({ email, url })
             })
             return await response.json()
         })

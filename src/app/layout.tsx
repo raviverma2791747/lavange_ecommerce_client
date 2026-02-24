@@ -7,6 +7,7 @@ import { AuthModal } from "@/components/AuthModal";
 import BottomNavbar from "@/components/BottomNavbar";
 import ToastProvider from "@/components/ToastProvider";
 import WhatsappButton from "@/components/WhatsappButton";
+import AuthInitializer from "@/components/AuthInitializer";
 
 
 const poppins = Poppins({
@@ -42,6 +43,7 @@ export default function RootLayout({
       <body
         className={`${poppins.className} overflow-x-hidden`}
       >
+        <AuthInitializer />
         <div className="min-h-screen">
           <Header />
           {children}

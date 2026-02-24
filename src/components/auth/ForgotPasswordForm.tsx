@@ -25,8 +25,11 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onLogin, onSubm
 
     const onSubmitHandler: SubmitHandler<IForgotPasswordForm> = async (data) => {
         setLoading(true);
-        if (onSubmit) await onSubmit(data);
-        setLoading(false);
+        try {
+            if (onSubmit) await onSubmit(data);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (

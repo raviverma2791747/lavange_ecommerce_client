@@ -27,15 +27,18 @@ const EmailLoginForm: React.FC<IEmailLoginFormProps> = ({ onSubmit, onForgotPass
 
     const onSubmitHandler: SubmitHandler<IEmailLoginForm> = async (data) => {
         setLoading(true);
-        if (onSubmit) await onSubmit(data);
-        setLoading(false);
+        try {
+            if (onSubmit) await onSubmit(data);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
             <div className="mb-4">
                 <Input
-                    type="email"
+                    // type="email"
                     placeholder="Email"
                     {...register('email', { required: 'Email is required' })}
                     disabled={loading}

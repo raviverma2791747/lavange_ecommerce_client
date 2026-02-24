@@ -1,6 +1,6 @@
 'use client';
 import { BagSimple, Heart, List, MagnifyingGlass, UserCircle } from '@phosphor-icons/react/dist/ssr'
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,60 +9,27 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import useStore from '@/helper/store';
-import { userPrivateService, userService } from '@/services';
-import { getAvatarName, processCart } from '@/helper/utils';
+import { getAvatarName } from '@/helper/utils';
 import { useRouter } from 'next/navigation';
-import { ProductModel } from "@/models";
-import { model } from "@/types/model"
 import CartItem from './CartItem';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
+import { useAuth } from '@/hooks/use-auth';
 
 const Header = () => {
-    const { setAuthModal, wishlist, setWishlist, cart, setCart, userInfo, setUserInfo, authenticating, setAuthenticating } = useStore();
+    const { setAuthModal, wishlist, cart, userInfo } = useStore();
     const router = useRouter();
-
-    const initWishlist = async () => {
-        const response = await userPrivateService.getWishlist();
-        if (response && response.status === 200) {
-            setWishlist(response.data.wishList as ProductModel[] ?? []);
-        }
-    }
-
-    const initCart = async () => {
-        const response = await userPrivateService.getCart();
-        if (response && response.status === 200) {
-            const temp_cart = response.data.cart as model.ICartItem[] ?? [];
-            setCart(processCart(temp_cart).map((temp_item) => { return { ...temp_item, product: ProductModel.fromOBJ(temp_item.product) } }));
-            // const t = temp_cart.map((temp_item: any) => { return { ...temp_item, product: Product.fromJSON(temp_item.product) } });
-            // console.log(t);
-        }
-    }
-
-    const initUser = async () => {
-        setAuthenticating(true);
-        const response = await userPrivateService.me();
-        if (response && response.status === 200) {
-            setUserInfo(response.data.user as model.IUser ?? null);
-            initCart();
-            initWishlist();
-        }
-        setAuthenticating(false);
-    }
+    const { logout: logoutSession } = useAuth();
 
     const logout = async () => {
-        const response = await userService.logout();
-        if (response && response.status === 200) {
-            setUserInfo(null);
+        const success = await logoutSession();
+        if (success) {
+            toast.success("Logged out successfully");
+            return;
         }
-    }
 
-    useEffect(() => {
-        // initUser();
-    }, []);
-
-    useEffect(() => {
-        // toast.info("Authenticating...");
-    }, [authenticating])
+        toast.error("Failed to log out");
+    };
 
     return (<header className="border-b border-gray-200 sticky top-0 bg-white z-50 h-16">
         <div

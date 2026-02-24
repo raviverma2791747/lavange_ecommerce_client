@@ -5,9 +5,9 @@ import EmailSignupForm, { IEmailSignupForm } from './EmailSignupForm';
 import ForgotPasswordForm, { IForgotPasswordForm } from './ForgotPasswordForm';
 import EmailSignupSuccess from './EmailSignupSuccess';
 import useStore from '@/helper/store';
-import { userPrivateService, userService } from '@/services';
+import { userService } from '@/services';
 import { toast } from 'react-toastify';
-import { model } from '@/types/model';
+import { useAuth } from '@/hooks/use-auth';
 
 const AUTH_STATE = {
     SIGNUP: "SIGNUP",
@@ -17,26 +17,23 @@ const AUTH_STATE = {
     FORGOT_PASSWORD: "FORGOT_PASSWORD",
 };
 
-const EmailAuth = () => {
-    const [origin, setOrigin] = React.useState<string>("");
-    const { setUserInfo, setAuthModal, setAuthenticating } = useStore();
-    const [selectedAuthState, setSelectedAuthState] = React.useState<string>(AUTH_STATE.LOGIN);
+interface IEmailAuthProps {
+    onLoginSuccess?: () => void;
+}
 
-    const initUser = async () => {
-        setAuthenticating(true);
-        const response = await userPrivateService.me();
-        if (response && response.status === 200) {
-            setUserInfo(response.data.user as model.IUser ?? null);
-        }
-        setAuthenticating(false);
-    }
+const EmailAuth: React.FC<IEmailAuthProps> = ({ onLoginSuccess }) => {
+    const [origin, setOrigin] = React.useState<string>("");
+    const { setAuthModal } = useStore();
+    const { hydrateSession } = useAuth();
+    const [selectedAuthState, setSelectedAuthState] = React.useState<string>(AUTH_STATE.LOGIN);
 
     const handleLogin = async (data: IEmailLoginForm) => {
         const response = await userService.login({ username: data.email, password: data.password });
-        if (response && response.status === 200) {
+        if (response) {
             toast.success("Login successful");
-            initUser();
+            await hydrateSession();
             setAuthModal(false);
+            onLoginSuccess?.();
         } else {
             toast.error("Failed to login");
         }
@@ -56,7 +53,7 @@ const EmailAuth = () => {
             toast.success("Signup successful");
             setSelectedAuthState(AUTH_STATE.SIGNUP_SUCCESS);
         } else {
-            toast.error("Failed to signup");
+            toast.error(response?.message ?? "Failed to signup");
         }
     }
 
@@ -66,9 +63,10 @@ const EmailAuth = () => {
             url: `${origin}/account/password/reset`
         });
         if (response && response.status === 200) {
+            toast.success("Password reset link sent");
             setSelectedAuthState(AUTH_STATE.LOGIN);
         } else {
-            toast.error("Failed to reset password");
+            toast.error(response?.message ?? "Failed to reset password");
         }
     }
 

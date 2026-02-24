@@ -15,7 +15,7 @@ async function request<T>(
       ...(options.headers || {}),
     },
   });
-console.log(options, res)
+
   let data;
 
   try {
@@ -26,7 +26,8 @@ console.log(options, res)
 
   if (!res.ok) {
     if (res.status === 401) {
-      window.location.href = "/login";
+      const redirect = encodeURIComponent(window.location.pathname);
+      window.location.href = `/login?redirect=${redirect}`;
     }
 
     throw new HttpError(data?.message || "Request failed", res.status);
