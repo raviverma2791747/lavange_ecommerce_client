@@ -11,12 +11,10 @@ interface IEmailSignupFormProps {
 }
 
 export interface IEmailSignupForm {
-    firstName: string,
-    lastName: string,
     email: string,
+    phoneNumber: string,
     password: string,
-    confirmPassword: string,
-    dob: string
+    confirmPassword: string
 }
 
 const EmailSignupForm: React.FC<IEmailSignupFormProps> = ({ onLogin, onSubmit }) => {
@@ -24,16 +22,14 @@ const EmailSignupForm: React.FC<IEmailSignupFormProps> = ({ onLogin, onSubmit })
     const { register, handleSubmit, formState: { errors },
         watch, } = useForm({
             defaultValues: {
-                firstName: '',
-                lastName: '',
                 email: '',
+                phoneNumber: '',
                 password: '',
-                confirmPassword: '',
-                dob: ''
+                confirmPassword: ''
             }
         });
 
-    const confirmPassword = watch('confirmPassword');
+    const password = watch('password');
 
     const onSubmitHandler: SubmitHandler<IEmailSignupForm> = async (data) => {
         setLoading(true);
@@ -48,28 +44,6 @@ const EmailSignupForm: React.FC<IEmailSignupFormProps> = ({ onLogin, onSubmit })
         <form onSubmit={handleSubmit(onSubmitHandler)}>
             <div className="mb-4">
                 <Input
-                    type="text"
-                    placeholder="First name"
-                    {...register('firstName', { required: 'First name is required' })}
-                    disabled={loading}
-                    className={errors.firstName ? "border-red-500" : ""}
-                />
-                {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>}
-            </div>
-
-            <div className="mb-4">
-                <Input
-                    type="text"
-                    placeholder="Last name"
-                    {...register('lastName', { required: 'Last name is required' })}
-                    disabled={loading}
-                    className={errors.lastName ? "border-red-500" : ""}
-                />
-                {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName.message}</p>}
-            </div>
-
-            <div className="mb-4">
-                <Input
                     type="email"
                     placeholder="Email"
                     {...register('email', { required: 'Email is required' })}
@@ -81,13 +55,19 @@ const EmailSignupForm: React.FC<IEmailSignupFormProps> = ({ onLogin, onSubmit })
 
             <div className="mb-4">
                 <Input
-                    type="date"
-                    placeholder="Date of birth"
+                    type="tel"
+                    placeholder="Phone Number"
                     disabled={loading}
-                    {...register('dob', { required: 'Date of birth is required' })}
-                    className={errors.dob ? "border-red-500" : ""}
+                    {...register('phoneNumber', {
+                        required: 'Phone Number is required',
+                        pattern: {
+                            value: /^[0-9]{10,15}$/,
+                            message: 'Phone Number must be 10 to 15 digits'
+                        }
+                    })}
+                    className={errors.phoneNumber ? "border-red-500" : ""}
                 />
-                {errors.dob && <p className="text-red-500 text-xs mt-1">{errors.dob.message}</p>}
+                {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber.message}</p>}
             </div>
 
             <div className="mb-4">
@@ -113,7 +93,7 @@ const EmailSignupForm: React.FC<IEmailSignupFormProps> = ({ onLogin, onSubmit })
                         required: 'Confirm Password is required',
                         minLength: { value: 8, message: 'Confirm Password must be at least 8 characters' },
                         maxLength: { value: 16, message: 'ConfirmPassword must be at most 16 characters' },
-                        validate: value => value === confirmPassword || 'Passwords do not match'
+                        validate: value => value === password || 'Passwords do not match'
                     })}
                     disabled={loading}
                     className={errors.confirmPassword ? "border-red-500" : ""}

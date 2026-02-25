@@ -19,7 +19,15 @@ export const useAuth = () => {
     setAuthenticating(true);
 
     try {
-      const meResponse = await userPrivateService.me();
+      let meResponse = await userService.me();
+
+      if (meResponse?.status === 401) {
+        const refreshResponse = await userService.refresh();
+        if (refreshResponse?.status === 200) {
+          meResponse = await userService.me();
+        }
+      }
+
       if (!meResponse || meResponse.status !== 200) {
         setUserInfo(null);
         setCart([]);

@@ -1,4 +1,5 @@
 import { PUBLIC_API_URL } from "@/secrets";
+import { normalizeApiResponse, toApiErrorResponse } from "@/lib/api/response";
 import { service } from "@/types/service";
 
 class BaseService {
@@ -14,10 +15,10 @@ class BaseService {
 
     static async handler(fn: (...args: unknown[]) => Promise<service.IBaseResponse | null>): Promise<service.IBaseResponse | null> {
         try {
-            return await fn()
-        } catch {
-            //toast && alert(error)
-            return null
+            const response = await fn()
+            return normalizeApiResponse(response)
+        } catch (error) {
+            return toApiErrorResponse(error)
         }
     }
 }

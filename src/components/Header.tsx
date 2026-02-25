@@ -15,6 +15,7 @@ import CartItem from './CartItem';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/hooks/use-auth';
+import { PUBLIC_BRAND_NAME } from '@/secrets';
 
 const Header = () => {
     const { setAuthModal, wishlist, cart, userInfo } = useStore();
@@ -37,7 +38,7 @@ const Header = () => {
         >
             <div>
                 <Link className="flex-none text-xl font-semibold" href="/">
-                    {process.env.NEXT_PUBLIC_BRAND_NAME}</Link>
+                    {PUBLIC_BRAND_NAME}</Link>
             </div>
             <div className="grow">
                 <div className="lg:w-4/12 mx-auto relative">

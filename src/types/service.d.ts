@@ -17,14 +17,16 @@ export namespace service {
             username: string,
             email: string,
             password: string,
-            firstName: string,
-            lastName: string,
-            dob: string
+            phoneNumber: string
+        }
+
+        export interface IForgotPasswordParams {
+            email: string
         }
 
         export interface IResetPasswordParams {
-            email: string,
-            url: string
+            token: string,
+            newPassword: string
         }
     }
 
